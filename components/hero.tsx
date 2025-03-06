@@ -83,7 +83,6 @@ export default function Hero() {
   // Referencia para el efecto de estrellas en el fondo
   const starsCanvasRef = useRef<HTMLCanvasElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
-  const descriptionRef = useRef<HTMLParagraphElement>(null)
 
   // Estado para controlar la visibilidad de la imagen
   const [imageVisible, setImageVisible] = useState(false)
@@ -93,9 +92,6 @@ export default function Hero() {
     target: sectionRef,
     offset: ["start", "end start"],
   })
-
-  const textOpacity = useTransform(scrollYProgress, [0, 0.2], [0.5, 1])
-  const textBrightness = useTransform(scrollYProgress, [0, 0.2], [0.8, 1.2])
 
   // Efecto para crear estrellas en el fondo
   useEffect(() => {

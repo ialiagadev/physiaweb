@@ -23,7 +23,7 @@ export default function ComparisonSection() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   // Efectos de scroll
-  const { scrollYProgress } = useScroll({
+  useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   })
