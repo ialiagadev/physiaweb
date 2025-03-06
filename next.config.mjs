@@ -1,9 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // Desactivar ESLint durante el build para evitar errores
     eslint: {
-      // Desactivar ESLint durante el build (solo para desarrollo)
       ignoreDuringBuilds: true,
     },
-  }
+    // Mantener la configuración de imágenes existente
+    images: {
+      remotePatterns: [
+        {
+          protocol: 'https',
+          hostname: 'v0.blob.com',
+          pathname: '**',
+        },
+      ],
+    },
+  };
   
-  module.exports = nextConfig
+  // Usar export default para archivos .mjs (ES modules)
+  export default nextConfig;
+  
+  
