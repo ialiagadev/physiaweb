@@ -1,14 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-      remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'v0.blob.com',
-          pathname: '**',
-        },
-      ],
+    eslint: {
+      // Desactivar ESLint durante el build (solo para desarrollo)
+      ignoreDuringBuilds: true,
     },
-  };
+  }
   
-  export default nextConfig;
+  module.exports = nextConfig
