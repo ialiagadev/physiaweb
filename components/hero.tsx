@@ -6,7 +6,7 @@ import { useRef, useEffect, useState } from "react"
 import Image from "next/image"
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ChevronRight, Check } from "lucide-react"
+import { ChevronRight, Check, Sparkles } from "lucide-react"
 import PhysiaParticleText from "@/components/physia-particle-text"
 
 // Componente para texto iluminado por palabras
@@ -25,7 +25,7 @@ const Word: React.FC<WordProps> = ({ children, progress }) => {
   const textColor = useTransform(
     progress,
     [0, 0.5, 1],
-    ["rgb(156, 163, 175)", "rgb(192, 132, 252)", "rgb(216, 180, 254)"],
+    ["rgb(107, 114, 128)", "rgb(147, 51, 234)", "rgb(168, 85, 247)"],
   )
 
   return (
@@ -58,30 +58,100 @@ const IlluminatedText: React.FC<IlluminatedTextProps> = ({ text }) => {
 
   const words = text.split(" ")
 
-  const startDelay = 0.1 // Retraso inicial antes de que comience la animación
-  const totalDuration = 0.4 // Duración total de la animación en términos de scroll progress
-  const wordDuration = totalDuration / words.length
-
-  const wordProgresses = words.map((_, i) =>
-    useTransform(scrollYProgress, [startDelay + i * wordDuration, startDelay + (i + 1) * wordDuration, 1], [0, 1, 1]),
-  )
-
+  // Crear un componente separado para cada palabra
   return (
     <div ref={containerRef} className="py-4">
-      <div className="text-center font-sans text-lg sm:text-xl md:text-2xl tracking-wide leading-relaxed">
-        {words.map((word: string, index: number) => (
-          <Word key={index} progress={wordProgresses[index]}>
-            {word}
-          </Word>
+      <div className="text-center font-sans text-lg sm:text-xl md:text-2xl tracking-wide leading-relaxed text-purple-900">
+        {words.map((word, index) => (
+          <IlluminatedWord
+            key={index}
+            word={word}
+            scrollYProgress={scrollYProgress}
+            index={index}
+            totalWords={words.length}
+          />
         ))}
       </div>
     </div>
   )
 }
 
+// Componente separado para cada palabra que maneja su propio hook useTransform
+interface IlluminatedWordProps {
+  word: string
+  scrollYProgress: MotionValue<number>
+  index: number
+  totalWords: number
+}
+
+const IlluminatedWord: React.FC<IlluminatedWordProps> = ({ word, scrollYProgress, index, totalWords }) => {
+  const startDelay = 0.1
+  const totalDuration = 0.4
+  const wordDuration = totalDuration / totalWords
+
+  const progress = useTransform(
+    scrollYProgress,
+    [startDelay + index * wordDuration, startDelay + (index + 1) * wordDuration, 1],
+    [0, 1, 1],
+  )
+
+  return <Word progress={progress}>{word}</Word>
+}
+
+// Botón animado y llamativo
+const AnimatedButton: React.FC<{
+  children: React.ReactNode
+  className?: string
+}> = ({ children, className = "" }) => {
+  return (
+    <motion.div className="relative inline-block group" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      {/* Efecto de resplandor */}
+      <motion.div
+        className="absolute -inset-1 bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 rounded-full opacity-70 blur-md"
+        animate={{
+          background: [
+            "linear-gradient(90deg, rgba(219,39,119,0.7) 0%, rgba(124,58,237,0.7) 50%, rgba(37,99,235,0.7) 100%)",
+            "linear-gradient(90deg, rgba(37,99,235,0.7) 0%, rgba(219,39,119,0.7) 50%, rgba(124,58,237,0.7) 100%)",
+            "linear-gradient(90deg, rgba(124,58,237,0.7) 0%, rgba(37,99,235,0.7) 50%, rgba(219,39,119,0.7) 100%)",
+          ],
+        }}
+        transition={{
+          duration: 3,
+          repeat: Number.POSITIVE_INFINITY,
+          repeatType: "reverse",
+        }}
+      />
+
+      {/* Botón principal */}
+      <Button
+        size="lg"
+        className={`relative z-10 bg-gradient-to-r from-purple-700 via-purple-600 to-purple-800 hover:from-purple-800 hover:via-purple-700 hover:to-purple-900 text-white shadow-xl shadow-purple-500/20 px-8 py-6 font-medium ${className}`}
+      >
+        {children}
+
+        {/* Partículas decorativas */}
+        <motion.span
+          className="absolute -top-1 -right-1 text-yellow-300"
+          animate={{
+            rotate: [0, 15, 0, -15, 0],
+            scale: [1, 1.2, 1, 1.2, 1],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Number.POSITIVE_INFINITY,
+            repeatType: "loop",
+          }}
+        >
+          <Sparkles className="h-4 w-4" />
+        </motion.span>
+      </Button>
+    </motion.div>
+  )
+}
+
 export default function Hero() {
-  // Referencia para el efecto de estrellas en el fondo
-  const starsCanvasRef = useRef<HTMLCanvasElement>(null)
+  // Referencia para el efecto de partículas
+  const particlesCanvasRef = useRef<HTMLCanvasElement>(null)
   const sectionRef = useRef<HTMLElement>(null)
 
   // Estado para controlar la visibilidad de la imagen
@@ -93,15 +163,14 @@ export default function Hero() {
     offset: ["start", "end start"],
   })
 
-  // Efecto para crear estrellas en el fondo
+  // Efecto para crear las partículas en el fondo
   useEffect(() => {
-    const canvas = starsCanvasRef.current
+    const canvas = particlesCanvasRef.current
     if (!canvas) return
 
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
-    // Configurar el canvas para que ocupe toda la pantalla
     const setCanvasSize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
@@ -109,125 +178,58 @@ export default function Hero() {
 
     setCanvasSize()
 
-    // Crear estrellas
-    const stars: { x: number; y: number; size: number; opacity: number; speed: number }[] = []
-    const starCount = 150
-
-    for (let i = 0; i < starCount; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 1.5,
-        opacity: Math.random() * 0.8 + 0.2,
-        speed: Math.random() * 0.05 + 0.01,
-      })
-    }
-
-    // Animar estrellas
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      stars.forEach((star) => {
-        // Actualizar posición
-        star.y += star.speed
-
-        // Si la estrella sale de la pantalla, reiniciarla arriba
-        if (star.y > canvas.height) {
-          star.y = 0
-          star.x = Math.random() * canvas.width
-        }
-
-        // Dibujar estrella
-        ctx.beginPath()
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.3})`
-        ctx.fill()
-      })
-
-      requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    // Manejar cambio de tamaño de ventana
-    window.addEventListener("resize", setCanvasSize)
-
-    // Mostrar la imagen después de que el texto se haya formado
-    const timer = setTimeout(() => {
-      setImageVisible(true)
-    }, 1500)
-
-    return () => {
-      window.removeEventListener("resize", setCanvasSize)
-      clearTimeout(timer)
-    }
-  }, [])
-
-  // Particle background effect
-  useEffect(() => {
-    const canvas = starsCanvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    // Set canvas size
-    const setCanvasSize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-
-    setCanvasSize()
-
-    // Create particles
+    // Crear partículas
     const particles: {
       x: number
       y: number
       size: number
+      opacity: number
       speedX: number
       speedY: number
-      color: string
-      opacity: number
     }[] = []
 
-    // Create more particles for a richer effect
-    for (let i = 0; i < 120; i++) {
-      const size = Math.random() * 2 + 0.5
+    for (let i = 0; i < 80; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size,
+        size: Math.random() * 3 + 1,
+        opacity: Math.random() * 0.5 + 0.1,
         speedX: (Math.random() - 0.5) * 0.3,
         speedY: (Math.random() - 0.5) * 0.3,
-        color: Math.random() > 0.5 ? "#a78bfa" : "#93c5fd",
-        opacity: Math.random() * 0.5 + 0.2,
       })
     }
 
-    // Animation loop
+    // Función para dibujar las partículas
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
 
+      // Crear gradiente
+      const gradientBg = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
+      gradientBg.addColorStop(0, "rgba(255, 255, 255, 0.8)")
+      gradientBg.addColorStop(0.5, "rgba(233, 213, 255, 0.5)")
+      gradientBg.addColorStop(1, "rgba(255, 255, 255, 0.8)")
+
+      // Dibujar el fondo con el gradiente
+      ctx.fillStyle = gradientBg
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+      // Dibujar y actualizar cada partícula
       particles.forEach((particle) => {
-        // Update position
+        // Actualizar posición
         particle.x += particle.speedX
         particle.y += particle.speedY
 
-        // Bounce off edges
+        // Rebotar en los bordes
         if (particle.x < 0 || particle.x > canvas.width) particle.speedX *= -1
         if (particle.y < 0 || particle.y > canvas.height) particle.speedY *= -1
 
-        // Draw particle
+        // Dibujar partícula
         ctx.beginPath()
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2)
-        ctx.fillStyle =
-          particle.color +
-          Math.floor(particle.opacity * 255)
-            .toString(16)
-            .padStart(2, "0")
+        ctx.fillStyle = `rgba(147, 51, 234, ${particle.opacity})`
         ctx.fill()
 
-        // Connect nearby particles
+        // Conectar partículas cercanas
         particles.forEach((otherParticle) => {
           const dx = particle.x - otherParticle.x
           const dy = particle.y - otherParticle.y
@@ -235,7 +237,7 @@ export default function Hero() {
 
           if (distance < 100) {
             ctx.beginPath()
-            ctx.strokeStyle = `rgba(167, 139, 250, ${0.05 * (1 - distance / 100)})`
+            ctx.strokeStyle = `rgba(147, 51, 234, ${0.03 * (1 - distance / 100)})`
             ctx.lineWidth = 0.5
             ctx.moveTo(particle.x, particle.y)
             ctx.lineTo(otherParticle.x, otherParticle.y)
@@ -251,27 +253,30 @@ export default function Hero() {
 
     window.addEventListener("resize", setCanvasSize)
 
+    // Mostrar la imagen después de que el texto se haya formado
+    const timer = setTimeout(() => {
+      setImageVisible(true)
+    }, 1500)
+
     return () => {
       window.removeEventListener("resize", setCanvasSize)
+      clearTimeout(timer)
     }
   }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden min-h-screen bg-gradient-to-b from-[#0f1729] to-[#1a1033]"
-    >
-      {/* Efecto de estrellas en el fondo */}
-      <canvas ref={starsCanvasRef} className="absolute inset-0 z-0 opacity-40" />
+    <section ref={sectionRef} className="relative overflow-hidden min-h-screen bg-white">
+      {/* Canvas para el efecto de partículas */}
+      <canvas ref={particlesCanvasRef} className="absolute inset-0 z-0" />
 
-      {/* Efectos de neblina */}
+      {/* Elementos decorativos */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-purple-900/10 to-transparent opacity-30"></div>
-        <div className="absolute bottom-0 right-0 w-full h-1/3 bg-gradient-to-t from-blue-900/10 to-transparent opacity-30"></div>
+        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-purple-100 to-transparent opacity-50"></div>
+        <div className="absolute bottom-0 right-0 w-full h-1/3 bg-gradient-to-t from-purple-100 to-transparent opacity-50"></div>
 
-        {/* Círculos de luz difuminados */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-600/5 blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-blue-600/5 blur-3xl"></div>
+        {/* Resplandores sutiles */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-200/30 blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-purple-300/20 blur-3xl"></div>
       </div>
 
       <div className="container relative z-10 mx-auto px-4 py-16 sm:px-6 lg:px-8">
@@ -284,7 +289,7 @@ export default function Hero() {
             transition={{ duration: 0.5 }}
             className="mb-6"
           >
-            <div className="inline-flex items-center rounded-full bg-white/10 border border-purple-500/20 px-3 py-1 text-sm text-purple-200 backdrop-blur-sm">
+            <div className="inline-flex items-center rounded-full bg-purple-50 border border-purple-200 px-3 py-1 text-sm text-purple-700 backdrop-blur-sm">
               <span className="mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-purple-600">
                 <Check className="h-3 w-3 text-white" />
               </span>
@@ -295,60 +300,62 @@ export default function Hero() {
           {/* Contenedor del efecto de texto - Ahora más grande y centrado */}
           <div className="relative w-full max-w-4xl mb-12">
             {/* Resplandor detrás del texto */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-3xl blur-3xl"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-200/50 to-purple-300/50 rounded-3xl blur-3xl"></div>
 
             {/* Aumentamos el tamaño y añadimos un marco decorativo */}
             <div className="relative h-56 sm:h-64 md:h-72 lg:h-80">
               {/* Marco decorativo */}
-              <div className="absolute -inset-4 border border-purple-500/20 rounded-3xl"></div>
+              <div className="absolute -inset-4 border border-purple-200 rounded-3xl"></div>
 
               {/* Efecto de partículas */}
               <PhysiaParticleText />
             </div>
           </div>
 
-          {/* Texto descriptivo con efecto de iluminación por palabras */}
-          <div className="mb-10 max-w-3xl mx-auto">
-            <IlluminatedText text="Herramienta de gestión centralizada para clínicas de profesionales de la salud, potenciada con Inteligencia Artificial." />
-          </div>
+          {/* NUEVO: Título principal exacto */}
+          <motion.div
+            className="mb-6 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+          >
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-6">
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-700 via-purple-500 to-purple-800">
+                Herramienta de gestión centralizada para clínicas de profesionales de la salud, potenciada con
+                Inteligencia Artificial
+              </span>
+            </h1>
 
-          {/* Botones de acción */}
+            <div className="max-w-4xl mx-auto">
+              <motion.p
+                className="text-lg md:text-xl text-purple-800 leading-relaxed"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.4 }}
+              >
+                Automatiza las tareas administrativas y mejora la experiencia de tus pacientes para que tu puedas
+                centrarte en lo que realmente importa: ofrecer una atención de calidad y mejorar el bienestar de tus
+                pacientes.
+              </motion.p>
+            </div>
+          </motion.div>
+
+          {/* Botones de acción - Ahora con el botón animado */}
           <motion.div
             className="flex flex-wrap justify-center gap-4 mb-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
           >
-            <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white">
-              Prueba Gratis
+            <AnimatedButton>
+              Descubre qué hace Physia
               <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="border-purple-500/30 bg-white/5 text-purple-200 hover:bg-white/10"
-            >
-              Ver Demostración
-            </Button>
+            </AnimatedButton>
+
+          
           </motion.div>
 
-          {/* Características en fila */}
-          <motion.div
-            className="grid grid-cols-3 gap-6 mb-16"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.9 }}
-          >
-            {["Automatiza tareas", "Mejora la experiencia", "Atención de calidad"].map((feature: string, i: number) => (
-              <div key={i} className="flex items-center space-x-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-900/50 border border-purple-500/20">
-                  <Check className="h-4 w-4 text-purple-300" />
-                </div>
-                <span className="text-sm font-medium text-gray-300">{feature}</span>
-              </div>
-            ))}
-          </motion.div>
-
+    
           {/* Imagen principal - Ahora aparece después del texto */}
           <motion.div
             className="relative z-10 mx-auto max-w-3xl"
@@ -358,10 +365,10 @@ export default function Hero() {
           >
             <div className="relative">
               {/* Resplandor detrás de la imagen */}
-              <div className="absolute -inset-4 rounded-lg bg-gradient-to-r from-purple-600/20 to-blue-600/20 blur-xl"></div>
+              <div className="absolute -inset-4 rounded-lg bg-gradient-to-r from-purple-200 to-purple-300/50 blur-xl"></div>
 
               {/* Imagen principal */}
-              <div className="relative rounded-lg border border-white/10 overflow-hidden shadow-2xl">
+              <div className="relative rounded-lg border border-purple-100 overflow-hidden shadow-lg">
                 <Image
                   src="/mainimagge.png"
                   alt="Physia - Plataforma de gestión para clínicas"
@@ -373,8 +380,8 @@ export default function Hero() {
               </div>
 
               {/* Insignia decorativa */}
-              <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-gradient-to-r from-purple-600 to-blue-600 p-1 shadow-lg">
-                <div className="flex h-full w-full items-center justify-center rounded-full bg-[#0f1729] text-white">
+              <div className="absolute -bottom-6 -left-6 h-24 w-24 rounded-full bg-gradient-to-r from-purple-500 to-purple-700 p-1 shadow-lg">
+                <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-purple-800">
                   <span className="text-center text-xs font-bold">
                     IA
                     <br />
@@ -398,10 +405,10 @@ export default function Hero() {
         }}
       >
         <div className="flex flex-col items-center">
-          <div className="text-gray-400 text-sm mb-2">Scroll para descubrir</div>
-          <div className="w-6 h-10 border-2 border-gray-400 rounded-full flex justify-center">
+          <div className="text-purple-500 text-sm mb-2">Scroll para descubrir</div>
+          <div className="w-6 h-10 border-2 border-purple-400 rounded-full flex justify-center">
             <motion.div
-              className="w-1.5 h-1.5 bg-purple-400 rounded-full mt-2"
+              className="w-1.5 h-1.5 bg-purple-500 rounded-full mt-2"
               animate={{ y: [0, 15, 0] }}
               transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5, ease: "easeInOut" }}
             />
