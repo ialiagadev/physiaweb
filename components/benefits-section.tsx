@@ -35,9 +35,30 @@ const BenefitCard: React.FC<BenefitCardProps> = ({
   // Calculate rotation for 3D effect
   const rotateY = variant === "problem" ? -5 + (index / (total - 1)) * 10 : 5 - (index / (total - 1)) * 10
 
-  // Determine gradient based on variant
-  const gradientBg =
-    variant === "problem" ? "from-purple-500/80 to-purple-600/70" : "from-purple-600/80 to-purple-700/70"
+  // Determine styles based on variant
+  const cardGradient = variant === "problem" 
+    ? "from-purple-500/90 to-purple-600/80" 
+    : "from-purple-700/90 to-purple-800/80"
+  
+  const iconBg = variant === "problem" 
+    ? "bg-purple-400/30" 
+    : "bg-white/20"
+  
+  const iconBorder = variant === "problem" 
+    ? "border-purple-300/30" 
+    : "border-white/30"
+  
+  const iconColor = variant === "problem" 
+    ? "text-white" 
+    : "text-white"
+  
+  const cardBorder = variant === "problem" 
+    ? "border-purple-400/30 hover:border-purple-300/50" 
+    : "border-white/20 hover:border-white/30"
+  
+  const decorationColor = variant === "problem" 
+    ? "bg-purple-300/30" 
+    : "bg-white/10"
 
   return (
     <motion.div
@@ -62,19 +83,28 @@ const BenefitCard: React.FC<BenefitCardProps> = ({
     >
       {/* Glow effect */}
       <motion.div
-        className={`absolute -inset-1 rounded-2xl bg-gradient-to-r ${gradientBg} blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
+        className={`absolute -inset-1 rounded-2xl bg-gradient-to-r ${cardGradient} blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
         animate={isInView ? { scale: [0.8, 1.05, 1] } : {}}
         transition={{ duration: 1, delay: delay + 0.2 }}
       />
 
       {/* Card content */}
       <div
-        className={`relative bg-gradient-to-br ${gradientBg} backdrop-blur-sm border-white/20 hover:border-white/30 rounded-xl p-6 border transition-all duration-500 h-full transform-gpu will-change-transform shadow-md`}
+        className={`relative bg-gradient-to-br ${cardGradient} backdrop-blur-sm ${cardBorder} rounded-xl p-6 border transition-all duration-500 h-full transform-gpu will-change-transform shadow-md`}
       >
+        {/* Decorative corner shape - different for each variant */}
+        {variant === "problem" ? (
+          <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
+            <div className="absolute transform rotate-45 bg-purple-400/20 w-16 h-16 -right-8 -top-8"></div>
+          </div>
+        ) : (
+          <div className="absolute top-0 right-0 w-4 h-4 bg-white/20 rounded-full -mt-1 -mr-1"></div>
+        )}
+        
         <div className="flex flex-col h-full">
           {/* Icon */}
           <motion.div
-            className="p-4 bg-white/20 rounded-xl mb-4 self-start"
+            className={`p-4 ${iconBg} rounded-xl mb-4 self-start`}
             animate={
               isInView
                 ? {
@@ -88,9 +118,9 @@ const BenefitCard: React.FC<BenefitCardProps> = ({
             <motion.div
               animate={{ rotate: [0, 360] }}
               transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-              className="absolute inset-0 rounded-xl border border-white/30 opacity-50"
+              className={`absolute inset-0 rounded-xl border ${iconBorder} opacity-50`}
             />
-            <div className="h-8 w-8 text-white">{icon}</div>
+            <div className={`h-8 w-8 ${iconColor}`}>{icon}</div>
           </motion.div>
 
           {/* Title */}
@@ -113,7 +143,7 @@ const BenefitCard: React.FC<BenefitCardProps> = ({
 
           {/* Decorative elements */}
           <motion.div
-            className="absolute -bottom-2 -right-2 w-12 h-12 rounded-full bg-white/10 blur-lg"
+            className={`absolute -bottom-2 -right-2 w-12 h-12 rounded-full ${decorationColor} blur-lg`}
             animate={
               isInView
                 ? {

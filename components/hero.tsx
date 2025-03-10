@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useRef, useEffect, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ChevronRight, Check, Sparkles } from "lucide-react"
@@ -98,11 +99,45 @@ const IlluminatedWord: React.FC<IlluminatedWordProps> = ({ word, scrollYProgress
   return <Word progress={progress}>{word}</Word>
 }
 
-// Botón animado y llamativo
-const AnimatedButton: React.FC<{
+// Botón animado y llamativo con soporte para enlaces
+interface AnimatedButtonProps {
   children: React.ReactNode
   className?: string
-}> = ({ children, className = "" }) => {
+  href?: string
+}
+
+const AnimatedButton: React.FC<AnimatedButtonProps> = ({ children, className = "", href }) => {
+  const buttonContent = (
+    <>
+      {children}
+
+      {/* Partículas decorativas */}
+      <motion.span
+        className="absolute -top-1 -right-1 text-yellow-300"
+        animate={{
+          rotate: [0, 15, 0, -15, 0],
+          scale: [1, 1.2, 1, 1.2, 1],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Number.POSITIVE_INFINITY,
+          repeatType: "loop",
+        }}
+      >
+        <Sparkles className="h-4 w-4" />
+      </motion.span>
+    </>
+  )
+
+  const buttonElement = (
+    <Button
+      size="lg"
+      className={`relative z-10 bg-gradient-to-r from-purple-700 via-purple-600 to-purple-800 hover:from-purple-800 hover:via-purple-700 hover:to-purple-900 text-white shadow-xl shadow-purple-500/20 px-8 py-6 font-medium ${className}`}
+    >
+      {buttonContent}
+    </Button>
+  )
+
   return (
     <motion.div className="relative inline-block group" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
       {/* Efecto de resplandor */}
@@ -122,29 +157,14 @@ const AnimatedButton: React.FC<{
         }}
       />
 
-      {/* Botón principal */}
-      <Button
-        size="lg"
-        className={`relative z-10 bg-gradient-to-r from-purple-700 via-purple-600 to-purple-800 hover:from-purple-800 hover:via-purple-700 hover:to-purple-900 text-white shadow-xl shadow-purple-500/20 px-8 py-6 font-medium ${className}`}
-      >
-        {children}
-
-        {/* Partículas decorativas */}
-        <motion.span
-          className="absolute -top-1 -right-1 text-yellow-300"
-          animate={{
-            rotate: [0, 15, 0, -15, 0],
-            scale: [1, 1.2, 1, 1.2, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Number.POSITIVE_INFINITY,
-            repeatType: "loop",
-          }}
-        >
-          <Sparkles className="h-4 w-4" />
-        </motion.span>
-      </Button>
+      {/* Botón principal - con o sin enlace */}
+      {href ? (
+        <Link href={href} className="inline-block">
+          {buttonElement}
+        </Link>
+      ) : (
+        buttonElement
+      )}
     </motion.div>
   )
 }
@@ -340,22 +360,19 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Botones de acción - Ahora con el botón animado */}
+          {/* Botones de acción - Ahora con el botón animado y enlace a funcionalidades */}
           <motion.div
             className="flex flex-wrap justify-center gap-4 mb-10"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
           >
-            <AnimatedButton>
+            <AnimatedButton href="/funcionalidades">
               Descubre qué hace Physia
               <ChevronRight className="ml-2 h-4 w-4" />
             </AnimatedButton>
-
-          
           </motion.div>
 
-    
           {/* Imagen principal - Ahora aparece después del texto */}
           <motion.div
             className="relative z-10 mx-auto max-w-3xl"
