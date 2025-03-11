@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Menu, X, Brain } from "lucide-react"
+import { Menu, X, Brain, Sparkles } from "lucide-react"
 
 const navLinks = [
   { name: "Inicio", href: "/" },
@@ -84,32 +84,65 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="px-4 py-2 text-purple-900 hover:text-purple-700 font-medium rounded-md relative"
-              >
-                {link.name}
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500 origin-left"
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
+          <div className="hidden md:flex items-center">
+            <nav className="flex items-center space-x-1 mr-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className="px-4 py-2 text-purple-900 hover:text-purple-700 font-medium rounded-md relative"
+                >
+                  {link.name}
+                  <motion.div
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-500 origin-left"
+                    initial={{ scaleX: 0 }}
+                    whileHover={{ scaleX: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </Link>
+              ))}
+            </nav>
+
+            {/* Botón de Prueba Gratis destacado con efecto de zoom */}
+            <motion.div
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            >
+              <Link href="/prueba-gratis">
+                <button className="flex items-center gap-1.5 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-300">
+                  <Sparkles className="h-4 w-4" />
+                  <span>Prueba Gratis</span>
+                </button>
               </Link>
-            ))}
-          </nav>
+            </motion.div>
+          </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className="md:hidden p-2 rounded-md text-purple-900 hover:bg-purple-100 transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
-          >
-            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          <div className="md:hidden flex items-center">
+            {/* Botón de Prueba Gratis para móvil con efecto de zoom */}
+            <motion.div
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              className="mr-2"
+            >
+              <Link href="/prueba-gratis">
+                <button className="flex items-center gap-1 bg-gradient-to-r from-purple-600 to-purple-500 text-white text-sm font-medium py-1.5 px-3 rounded-full">
+                  <Sparkles className="h-3 w-3" />
+                  <span>Prueba</span>
+                </button>
+              </Link>
+            </motion.div>
+
+            <button
+              className="p-2 rounded-md text-purple-900 hover:bg-purple-100 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -128,6 +161,22 @@ export default function Navbar() {
                 </Link>
               </div>
             ))}
+
+            {/* Botón de Prueba Gratis destacado en menú móvil con efecto de zoom */}
+            <div className="py-1 mt-2 border-t border-purple-100 pt-3">
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                <Link href="/prueba-gratis" className="block" onClick={() => setIsMobileMenuOpen(false)}>
+                  <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium py-3 px-4 rounded-md">
+                    <Sparkles className="h-4 w-4" />
+                    <span>Comenzar Prueba Gratuita</span>
+                  </button>
+                </Link>
+              </motion.div>
+            </div>
           </div>
         </div>
       )}

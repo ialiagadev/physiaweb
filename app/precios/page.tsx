@@ -5,6 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { Users2, CalendarDays, Bell, Mail, Phone, Database, Smartphone, Sparkles, Star, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import ReminderCalculator from "@/components/reminider-calculator"
 
 // Tipos de planes
 type BillingPeriod = "monthly" | "biannual" | "annual"
@@ -228,8 +229,10 @@ export default function PricingPage() {
 
         {/* Nota IVA */}
         <p className="text-center text-gray-500 mt-12">*IVA no incluido</p>
+        <ReminderCalculator/>
       </div>
     </section>
+    
   )
 }
 
