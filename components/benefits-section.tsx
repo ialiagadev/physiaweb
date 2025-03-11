@@ -99,6 +99,104 @@ const BenefitCard: React.FC<BenefitCardProps> = ({
   )
 }
 
+// Componente para el texto con gradiente decorativo
+const GradientDecoText: React.FC = () => {
+  return (
+    <div className="relative py-8 sm:py-12 px-4 sm:px-8 max-w-4xl mx-auto">
+      {/* Fondo decorativo con resplandor */}
+      <div className="absolute -inset-4 bg-gradient-to-r from-purple-300/20 via-purple-400/20 to-purple-300/20 rounded-2xl blur-xl"></div>
+
+      {/* Borde decorativo */}
+      <div className="absolute inset-0 border border-purple-300/30 rounded-2xl"></div>
+
+      {/* Contenedor principal */}
+      <div className="relative flex flex-col items-center justify-center">
+        {/* Texto con gradiente */}
+        <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-center py-4 px-4">
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-800 via-fuchsia-600 to-purple-600 animate-gradient-x">
+            Empieza hoy y mejora la gestión de tu clínica con PHYSIA
+          </span>
+        </h2>
+
+        {/* Decorative sparkles */}
+        <motion.div
+          className="absolute -top-6 -left-6 w-8 h-8 text-purple-500"
+          animate={{ rotate: 360 }}
+          transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+        >
+          <Sparkles className="w-full h-full" />
+        </motion.div>
+
+        <motion.div
+          className="absolute -bottom-6 -right-6 w-8 h-8 text-purple-500"
+          animate={{ rotate: -360 }}
+          transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+        >
+          <Sparkles className="w-full h-full" />
+        </motion.div>
+
+        {/* Animated underline */}
+        <motion.div
+          className="h-1 bg-gradient-to-r from-purple-400 via-fuchsia-500 to-purple-400 rounded-full mt-4 mb-8"
+          initial={{ width: 0 }}
+          whileInView={{ width: "80%" }}
+          viewport={{ once: false }}
+          transition={{ duration: 1.5, delay: 0.2 }}
+        />
+
+        {/* Botón de Prueba Gratis */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.8 }}
+          className="mt-4"
+        >
+          <Link href="/prueba-gratis">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="relative">
+              {/* Efecto de resplandor */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-purple-600 to-fuchsia-600 rounded-full opacity-70 blur-sm group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              <Button
+                size="lg"
+                className="relative bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-medium shadow-lg shadow-purple-500/20 px-8 py-6 rounded-full"
+              >
+                Prueba Gratis
+                <Sparkles className="ml-2 h-4 w-4" />
+              </Button>
+            </motion.div>
+          </Link>
+        </motion.div>
+
+        {/* Partículas decorativas adicionales */}
+        <motion.div
+          className="absolute top-1/2 left-0 w-6 h-6 text-purple-400/60"
+          animate={{
+            x: [0, 10, 0],
+            y: [0, -5, 0],
+            opacity: [0.4, 0.8, 0.4],
+          }}
+          transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
+        >
+          <Sparkles className="w-full h-full" />
+        </motion.div>
+
+        <motion.div
+          className="absolute top-1/4 right-0 w-6 h-6 text-purple-400/60"
+          animate={{
+            x: [0, -10, 0],
+            y: [0, 5, 0],
+            opacity: [0.4, 0.8, 0.4],
+          }}
+          transition={{ duration: 4, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay: 1 }}
+        >
+          <Sparkles className="w-full h-full" />
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
 export default function BenefitsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -317,7 +415,7 @@ export default function BenefitsSection() {
             </motion.div>
 
             <motion.h2
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 mb-3 sm:mb-4"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 mb-3 sm:mb-4 animate-gradient-x"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -356,7 +454,7 @@ export default function BenefitsSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.6 }}
           >
-            <Link href="/precios">
+            <Link href="/funcionalidades">
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-medium shadow-lg shadow-purple-500/20 px-4 sm:px-8 py-3 sm:py-6 rounded-full transform transition-transform hover:scale-105 text-xs sm:text-base"
@@ -381,7 +479,7 @@ export default function BenefitsSection() {
             </motion.div>
 
             <motion.h2
-              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-purple-900 mb-3 sm:mb-4"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 mb-3 sm:mb-4 animate-gradient-x"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -425,7 +523,7 @@ export default function BenefitsSection() {
         >
           <div className="text-center mb-6 sm:mb-8">
             <span className="text-gray-600 text-xs sm:text-sm uppercase tracking-wider">No te pierdas el</span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 mt-1 sm:mt-2 mb-8 sm:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 animate-gradient-x mt-1 sm:mt-2 mb-8 sm:mb-16">
               Vídeo demo de PHYSIA
             </h2>
           </div>
@@ -446,22 +544,15 @@ export default function BenefitsSection() {
               ></iframe>
             </div>
 
-            {/* CTA Button */}
+            {/* Texto decorativo con gradiente */}
             <motion.div
-              className="mt-8 sm:mt-12 text-center"
+              className="mt-16 sm:mt-24"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <Link href="/prueba-gratis">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-medium shadow-lg shadow-purple-500/20 px-4 sm:px-8 py-3 sm:py-4 rounded-full transform transition-transform hover:scale-105 text-xs sm:text-base"
-                >
-                  EMPIEZA HOY Y MEJORA LA GESTIÓN DE TU CLÍNICA CON PHYSIA
-                </Button>
-              </Link>
+              <GradientDecoText />
             </motion.div>
           </div>
         </motion.div>
@@ -469,13 +560,15 @@ export default function BenefitsSection() {
 
       {/* Floating elements - fewer on mobile */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(window.innerWidth < 768 ? 5 : 10)].map((_, i) => (
+        {[...Array(typeof window !== "undefined" ? (window.innerWidth < 768 ? 5 : 10) : 5)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-purple-100 border border-purple-200"
             style={{
-              width: Math.random() * 40 + 10 + (window.innerWidth < 768 ? 0 : 20),
-              height: Math.random() * 40 + 10 + (window.innerWidth < 768 ? 0 : 20),
+              width:
+                Math.random() * 40 + 10 + (typeof window !== "undefined" ? (window.innerWidth < 768 ? 0 : 20) : 10),
+              height:
+                Math.random() * 40 + 10 + (typeof window !== "undefined" ? (window.innerWidth < 768 ? 0 : 20) : 10),
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
