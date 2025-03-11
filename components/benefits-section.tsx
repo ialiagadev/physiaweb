@@ -4,8 +4,9 @@ import type React from "react"
 
 import { useRef, useEffect } from "react"
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion"
-import { Calendar, FileText, BookOpen, User2, BotIcon as Robot, FolderOpen, Settings, Sparkles } from 'lucide-react'
+import { Calendar, FileText, BookOpen, User2, BotIcon as Robot, FolderOpen, Settings, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 interface BenefitCardProps {
   icon: React.ReactNode
@@ -24,139 +25,77 @@ const BenefitCard: React.FC<BenefitCardProps> = ({
   index,
   total,
   variant = "problem",
-  theme = "dark"
+  theme = "dark",
 }) => {
   const cardRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(cardRef, { once: false, margin: "-100px 0px" })
+  const isInView = useInView(cardRef, { once: true, margin: "-100px 0px" })
 
   // Calculate staggered animation delay
   const delay = index * 0.1
 
-  // Calculate rotation for 3D effect
-  const rotateY = variant === "problem" ? -5 + (index / (total - 1)) * 10 : 5 - (index / (total - 1)) * 10
-
   // Determine styles based on variant
-  const cardGradient = variant === "problem" 
-    ? "from-purple-500/90 to-purple-600/80" 
-    : "from-purple-700/90 to-purple-800/80"
-  
-  const iconBg = variant === "problem" 
-    ? "bg-purple-400/30" 
-    : "bg-white/20"
-  
-  const iconBorder = variant === "problem" 
-    ? "border-purple-300/30" 
-    : "border-white/30"
-  
-  const iconColor = variant === "problem" 
-    ? "text-white" 
-    : "text-white"
-  
-  const cardBorder = variant === "problem" 
-    ? "border-purple-400/30 hover:border-purple-300/50" 
-    : "border-white/20 hover:border-white/30"
-  
-  const decorationColor = variant === "problem" 
-    ? "bg-purple-300/30" 
-    : "bg-white/10"
+  const cardGradient =
+    variant === "problem" ? "from-purple-500/90 to-purple-600/80" : "from-purple-700/90 to-purple-800/80"
+
+  const iconBg = variant === "problem" ? "bg-purple-400/30" : "bg-white/20"
+
+  const iconBorder = variant === "problem" ? "border-purple-300/30" : "border-white/30"
+
+  const iconColor = variant === "problem" ? "text-white" : "text-white"
+
+  const cardBorder =
+    variant === "problem" ? "border-purple-400/30 hover:border-purple-300/50" : "border-white/20 hover:border-white/30"
+
+  const decorationColor = variant === "problem" ? "bg-purple-300/30" : "bg-white/10"
 
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 50, rotateY }}
-      animate={
-        isInView
-          ? {
-              opacity: 1,
-              y: 0,
-              rotateY: 0,
-              transition: {
-                duration: 0.7,
-                delay,
-                type: "spring",
-                stiffness: 100,
-              },
-            }
-          : {}
-      }
-      className="relative group perspective"
-    >
+    <div ref={cardRef} className="relative group h-full">
       {/* Glow effect */}
       <motion.div
         className={`absolute -inset-1 rounded-2xl bg-gradient-to-r ${cardGradient} blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700`}
-        animate={isInView ? { scale: [0.8, 1.05, 1] } : {}}
-        transition={{ duration: 1, delay: delay + 0.2 }}
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 0 } : {}}
+        whileHover={{ opacity: 0.7 }}
+        transition={{ duration: 0.5 }}
       />
 
       {/* Card content */}
       <div
-        className={`relative bg-gradient-to-br ${cardGradient} backdrop-blur-sm ${cardBorder} rounded-xl p-6 border transition-all duration-500 h-full transform-gpu will-change-transform shadow-md`}
+        className={`relative bg-gradient-to-br ${cardGradient} backdrop-blur-sm ${cardBorder} rounded-xl p-4 sm:p-6 border transition-all duration-500 h-full shadow-md`}
       >
         {/* Decorative corner shape - different for each variant */}
         {variant === "problem" ? (
-          <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
-            <div className="absolute transform rotate-45 bg-purple-400/20 w-16 h-16 -right-8 -top-8"></div>
+          <div className="absolute top-0 right-0 w-12 sm:w-16 h-12 sm:h-16 overflow-hidden">
+            <div className="absolute transform rotate-45 bg-purple-400/20 w-12 sm:w-16 h-12 sm:h-16 -right-6 sm:-right-8 -top-6 sm:-top-8"></div>
           </div>
         ) : (
-          <div className="absolute top-0 right-0 w-4 h-4 bg-white/20 rounded-full -mt-1 -mr-1"></div>
+          <div className="absolute top-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-white/20 rounded-full -mt-1 -mr-1"></div>
         )}
-        
+
         <div className="flex flex-col h-full">
           {/* Icon */}
-          <motion.div
-            className={`p-4 ${iconBg} rounded-xl mb-4 self-start`}
-            animate={
-              isInView
-                ? {
-                    scale: [0.8, 1.2, 1],
-                    rotate: [0, 5, 0],
-                  }
-                : {}
-            }
-            transition={{ duration: 0.5, delay: delay + 0.3 }}
-          >
+          <div className={`p-3 sm:p-4 ${iconBg} rounded-xl mb-3 sm:mb-4 self-start relative`}>
             <motion.div
               animate={{ rotate: [0, 360] }}
               transition={{ duration: 20, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
               className={`absolute inset-0 rounded-xl border ${iconBorder} opacity-50`}
             />
-            <div className={`h-8 w-8 ${iconColor}`}>{icon}</div>
-          </motion.div>
+            <div className={`h-6 w-6 sm:h-8 sm:w-8 ${iconColor}`}>{icon}</div>
+          </div>
 
           {/* Title */}
-          <motion.h3
-            className="text-xl font-bold text-white mb-3"
-            animate={isInView ? { opacity: [0, 1], y: [20, 0] } : {}}
-            transition={{ duration: 0.5, delay: delay + 0.4 }}
-          >
-            {title}
-          </motion.h3>
+          <h3 className="text-lg sm:text-xl font-bold text-white mb-2 sm:mb-3">{title}</h3>
 
           {/* Description */}
-          <motion.p
-            className="text-purple-100 leading-relaxed text-sm"
-            animate={isInView ? { opacity: [0, 1], y: [20, 0] } : {}}
-            transition={{ duration: 0.5, delay: delay + 0.5 }}
-          >
-            {description}
-          </motion.p>
+          <p className="text-purple-100 leading-relaxed text-xs sm:text-sm">{description}</p>
 
           {/* Decorative elements */}
-          <motion.div
-            className={`absolute -bottom-2 -right-2 w-12 h-12 rounded-full ${decorationColor} blur-lg`}
-            animate={
-              isInView
-                ? {
-                    scale: [0, 1],
-                    opacity: [0, 0.6, 0.4],
-                  }
-                : {}
-            }
-            transition={{ duration: 1, delay: delay + 0.6 }}
+          <div
+            className={`absolute -bottom-2 -right-2 w-8 h-8 sm:w-12 sm:h-12 rounded-full ${decorationColor} blur-lg opacity-40`}
           />
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -175,8 +114,6 @@ export default function BenefitsSection() {
   })
 
   // Parallax effects
-  const problemsY = useTransform(springScrollY, [0, 0.5], [100, 0])
-  const solutionsY = useTransform(springScrollY, [0.3, 0.8], [100, 0])
   const opacitySection = useTransform(springScrollY, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
 
   // Background particle effect
@@ -205,7 +142,10 @@ export default function BenefitsSection() {
       opacity: number
     }[] = []
 
-    for (let i = 0; i < 100; i++) {
+    // Adjust number of particles based on screen size
+    const particleCount = window.innerWidth < 768 ? 50 : 100
+
+    for (let i = 0; i < particleCount; i++) {
       const size = Math.random() * 3 + 1
       particles.push({
         x: Math.random() * canvas.width,
@@ -320,7 +260,7 @@ export default function BenefitsSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative py-32 overflow-hidden"
+      className="relative py-16 sm:py-24 md:py-32 overflow-hidden"
       style={{
         background: "linear-gradient(to bottom, #f3e8ff 0%, #f5f3ff 50%, #f3e8ff 100%)",
       }}
@@ -335,7 +275,7 @@ export default function BenefitsSection() {
 
         {/* Glowing orbs */}
         <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-purple-200/30 blur-3xl"
+          className="absolute top-1/4 left-1/4 w-32 sm:w-48 md:w-64 rounded-full bg-purple-200/30 blur-3xl"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.5, 0.3],
@@ -347,7 +287,7 @@ export default function BenefitsSection() {
           }}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-purple-300/20 blur-3xl"
+          className="absolute bottom-1/4 right-1/4 w-48 sm:w-64 md:w-96 rounded-full bg-purple-300/20 blur-3xl"
           animate={{
             scale: [1, 1.3, 1],
             opacity: [0.3, 0.6, 0.3],
@@ -361,23 +301,23 @@ export default function BenefitsSection() {
         />
       </div>
 
-      <motion.div className="container relative z-10 mx-auto px-4" style={{ opacity: opacitySection }}>
+      <motion.div className="container relative z-10 mx-auto px-4 sm:px-6" style={{ opacity: opacitySection }}>
         {/* Problems Section */}
-        <motion.div style={{ y: problemsY }} className="mb-32">
-          <div className="text-center mb-16">
+        <div className="mb-16 sm:mb-24 md:mb-32">
+          <div className="text-center mb-10 sm:mb-16">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-purple-100 border border-purple-300/50 backdrop-blur-sm mb-6"
+              className="inline-flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-purple-100 border border-purple-300/50 backdrop-blur-sm mb-4 sm:mb-6"
             >
-              <Sparkles className="h-4 w-4 text-purple-600" />
-              <span className="text-purple-700 font-medium">Identifica tus desafíos</span>
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-purple-600" />
+              <span className="text-xs sm:text-sm text-purple-700 font-medium">Identifica tus desafíos</span>
             </motion.div>
 
             <motion.h2
-              className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 mb-4"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 mb-3 sm:mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -387,15 +327,15 @@ export default function BenefitsSection() {
             </motion.h2>
 
             <motion.div
-              className="h-1 w-32 bg-gradient-to-r from-purple-500 to-purple-300 mx-auto rounded-full mb-16"
+              className="h-1 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-purple-500 to-purple-300 mx-auto rounded-full mb-8 sm:mb-12 md:mb-16"
               initial={{ width: 0, opacity: 0 }}
-              whileInView={{ width: 128, opacity: 1 }}
+              whileInView={{ width: "8rem", opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.4 }}
             />
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
             {problems.map((problem, index) => (
               <BenefitCard
                 key={index}
@@ -410,39 +350,38 @@ export default function BenefitsSection() {
           </div>
 
           <motion.div
-            className="flex justify-center mt-16"
+            className="flex justify-center mt-10 sm:mt-16"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.6 }}
           >
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-medium shadow-lg shadow-purple-500/20 px-8 py-6 rounded-full transform transition-transform hover:scale-105"
-            >
-              ENTIENDE CÓMO PHYSIA PUEDE AYUDARTE EN TU DÍA A DÍA
-            </Button>
+            <Link href="/precios">
+              <Button
+                size="lg"
+                className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-medium shadow-lg shadow-purple-500/20 px-4 sm:px-8 py-3 sm:py-6 rounded-full transform transition-transform hover:scale-105 text-xs sm:text-base"
+              >
+                ENTIENDE CÓMO PHYSIA PUEDE AYUDARTE EN TU DÍA A DÍA
+              </Button>
+            </Link>
           </motion.div>
-        </motion.div>
+        </div>
 
-        <motion.div
-          style={{ y: solutionsY }}
-          className="py-16 px-4 bg-purple-100/70 backdrop-blur-sm rounded-2xl border border-purple-200/50 shadow-lg"
-        >
-          <div className="text-center mb-16">
+        <div className="py-8 sm:py-12 md:py-16 px-4 bg-purple-100/70 backdrop-blur-sm rounded-2xl border border-purple-200/50 shadow-lg">
+          <div className="text-center mb-8 sm:mb-12 md:mb-16">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-purple-200/70 border border-purple-300/50 backdrop-blur-sm mb-6"
+              className="inline-flex items-center gap-1 sm:gap-2 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full bg-purple-200/70 border border-purple-300/50 backdrop-blur-sm mb-4 sm:mb-6"
             >
-              <Sparkles className="h-4 w-4 text-purple-700" />
-              <span className="text-purple-800 font-medium">Descubre las soluciones</span>
+              <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-purple-700" />
+              <span className="text-xs sm:text-sm text-purple-800 font-medium">Descubre las soluciones</span>
             </motion.div>
 
             <motion.h2
-              className="text-4xl md:text-5xl font-bold text-purple-900 mb-4"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-purple-900 mb-3 sm:mb-4"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -452,15 +391,15 @@ export default function BenefitsSection() {
             </motion.h2>
 
             <motion.div
-              className="h-1 w-32 bg-gradient-to-r from-purple-500 to-purple-300 mx-auto rounded-full mb-16"
+              className="h-1 w-16 sm:w-24 md:w-32 bg-gradient-to-r from-purple-500 to-purple-300 mx-auto rounded-full mb-8 sm:mb-12 md:mb-16"
               initial={{ width: 0, opacity: 0 }}
-              whileInView={{ width: 128, opacity: 1 }}
+              whileInView={{ width: "8rem", opacity: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.4 }}
             />
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
             {solutions.map((solution, index) => (
               <BenefitCard
                 key={index}
@@ -474,19 +413,19 @@ export default function BenefitsSection() {
               />
             ))}
           </div>
-        </motion.div>
+        </div>
 
         {/* Video Demo Section */}
         <motion.div
-          className="container relative z-10 mx-auto px-4 mb-32 mt-40"
+          className="relative z-10 mx-auto px-0 sm:px-4 mb-16 sm:mb-24 md:mb-32 mt-16 sm:mt-24 md:mt-40"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="text-center mb-8">
-            <span className="text-gray-600 text-sm uppercase tracking-wider">No te pierdas el</span>
-            <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 mt-2 mb-16">
+          <div className="text-center mb-6 sm:mb-8">
+            <span className="text-gray-600 text-xs sm:text-sm uppercase tracking-wider">No te pierdas el</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-900 mt-1 sm:mt-2 mb-8 sm:mb-16">
               Vídeo demo de PHYSIA
             </h2>
           </div>
@@ -495,11 +434,11 @@ export default function BenefitsSection() {
             {/* Video wrapper with aspect ratio */}
             <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
               {/* Decorative elements */}
-              <div className="absolute -inset-4 bg-gradient-to-r from-purple-300/30 to-purple-400/20 rounded-3xl blur-xl"></div>
+              <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-r from-purple-300/30 to-purple-400/20 rounded-3xl blur-xl"></div>
 
               {/* Video iframe */}
               <iframe
-                className="absolute inset-0 w-full h-full rounded-2xl border border-purple-200 shadow-xl"
+                className="absolute inset-0 w-full h-full rounded-xl sm:rounded-2xl border border-purple-200 shadow-xl"
                 src="https://www.youtube.com/embed/2tTJ6zzFn2k"
                 title="Bienvenido a PHYSIA"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -509,38 +448,40 @@ export default function BenefitsSection() {
 
             {/* CTA Button */}
             <motion.div
-              className="mt-12 text-center"
+              className="mt-8 sm:mt-12 text-center"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
             >
-              <a
-                href="#"
-                className="inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-white bg-purple-600 rounded-full hover:bg-purple-700 transition-colors duration-300"
-              >
-                EMPIEZA HOY Y MEJORA LA GESTIÓN DE TU CLÍNICA CON PHYSIA
-              </a>
+              <Link href="/prueba-gratis">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-medium shadow-lg shadow-purple-500/20 px-4 sm:px-8 py-3 sm:py-4 rounded-full transform transition-transform hover:scale-105 text-xs sm:text-base"
+                >
+                  EMPIEZA HOY Y MEJORA LA GESTIÓN DE TU CLÍNICA CON PHYSIA
+                </Button>
+              </Link>
             </motion.div>
           </div>
         </motion.div>
       </motion.div>
 
-      {/* Floating elements */}
+      {/* Floating elements - fewer on mobile */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(10)].map((_, i) => (
+        {[...Array(window.innerWidth < 768 ? 5 : 10)].map((_, i) => (
           <motion.div
             key={i}
             className="absolute rounded-full bg-purple-100 border border-purple-200"
             style={{
-              width: Math.random() * 60 + 20,
-              height: Math.random() * 60 + 20,
+              width: Math.random() * 40 + 10 + (window.innerWidth < 768 ? 0 : 20),
+              height: Math.random() * 40 + 10 + (window.innerWidth < 768 ? 0 : 20),
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
             }}
             animate={{
-              y: [0, -30, 0],
-              x: [0, Math.random() * 20 - 10, 0],
+              y: [0, -20, 0],
+              x: [0, Math.random() * 10 - 5, 0],
               opacity: [0.1, 0.3, 0.1],
             }}
             transition={{
@@ -554,3 +495,4 @@ export default function BenefitsSection() {
     </section>
   )
 }
+

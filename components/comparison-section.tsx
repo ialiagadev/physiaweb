@@ -2,8 +2,9 @@
 
 import { useRef, useEffect } from "react"
 import { motion, useScroll } from "framer-motion"
-import { CheckCircle, ArrowRight, Sparkles, Package, Coins } from 'lucide-react'
+import { CheckCircle, ArrowRight, Sparkles, Package, Coins } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default function ComparisonSection() {
   // Referencia para el efecto de partículas en el fondo
@@ -251,7 +252,7 @@ export default function ComparisonSection() {
           </motion.div>
         </div>
 
-        {/* CTA */}
+        {/* CTA con enlace a la página de precios */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -259,15 +260,18 @@ export default function ComparisonSection() {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <Button
-            size="lg"
-            className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-8 py-6 rounded-full font-medium shadow-lg hover:shadow-purple-200 transition-all transform hover:scale-105"
-          >
-            Ver los Planes
-            <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
+          <Link href="/precios">
+            <Button
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-8 py-6 rounded-full font-medium shadow-lg hover:shadow-purple-200 transition-all transform hover:scale-105"
+            >
+              Ver los Planes
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
   )
 }
+
