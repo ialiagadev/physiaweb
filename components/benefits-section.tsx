@@ -2,9 +2,9 @@
 
 import type React from "react"
 
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import { motion, useScroll, useTransform, useSpring, useInView } from "framer-motion"
-import { Calendar, FileText, BookOpen, User2, BotIcon as Robot, FolderOpen, Settings, Sparkles } from "lucide-react"
+import { Calendar, FileText, BookOpen, User2, BotIcon as Robot, FolderOpen, Settings, Sparkles } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
@@ -198,6 +198,9 @@ const GradientDecoText: React.FC = () => {
 }
 
 export default function BenefitsSection() {
+  // Estado para controlar si el componente está montado en el cliente
+  const [isMounted, setIsMounted] = useState(false)
+  
   const sectionRef = useRef<HTMLElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const { scrollYProgress } = useScroll({
@@ -214,8 +217,15 @@ export default function BenefitsSection() {
   // Parallax effects
   const opacitySection = useTransform(springScrollY, [0, 0.1, 0.9, 1], [0, 1, 1, 0])
 
-  // Background particle effect
+  // Actualizar el estado cuando el componente se monte en el cliente
   useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  // Background particle effect - solo ejecutar en el cliente
+  useEffect(() => {
+    if (!isMounted) return
+    
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -306,7 +316,7 @@ export default function BenefitsSection() {
     return () => {
       window.removeEventListener("resize", setCanvasSize)
     }
-  }, [])
+  }, [isMounted])
 
   const problems = [
     {
@@ -363,41 +373,43 @@ export default function BenefitsSection() {
         background: "linear-gradient(to bottom, #f3e8ff 0%, #f5f3ff 50%, #f3e8ff 100%)",
       }}
     >
-      {/* Background canvas for particles */}
-      <canvas ref={canvasRef} className="absolute inset-0 z-0" />
+      {/* Background canvas for particles - solo renderizar en el cliente */}
+      {isMounted && <canvas ref={canvasRef} className="absolute inset-0 z-0" />}
 
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-purple-200/40 to-transparent opacity-60" />
-        <div className="absolute bottom-0 right-0 w-full h-1/3 bg-gradient-to-t from-purple-200/40 to-transparent opacity-60" />
+      {/* Background decorative elements - solo renderizar en el cliente */}
+      {isMounted && (
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-purple-200/40 to-transparent opacity-60" />
+          <div className="absolute bottom-0 right-0 w-full h-1/3 bg-gradient-to-t from-purple-200/40 to-transparent opacity-60" />
 
-        {/* Glowing orbs */}
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-32 sm:w-48 md:w-64 rounded-full bg-purple-200/30 blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 8,
-            repeat: Number.POSITIVE_INFINITY,
-            repeatType: "reverse",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-48 sm:w-64 md:w-96 rounded-full bg-purple-300/20 blur-3xl"
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 10,
-            repeat: Number.POSITIVE_INFINITY,
-            repeatType: "reverse",
-            delay: 2,
-          }}
-        />
-      </div>
+          {/* Glowing orbs */}
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-32 sm:w-48 md:w-64 rounded-full bg-purple-200/30 blur-3xl"
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.5, 0.3],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+            }}
+          />
+          <motion.div
+            className="absolute bottom-1/4 right-1/4 w-48 sm:w-64 md:w-96 rounded-full bg-purple-300/20 blur-3xl"
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 10,
+              repeat: Number.POSITIVE_INFINITY,
+              repeatType: "reverse",
+              delay: 2,
+            }}
+          />
+        </div>
+      )}
 
       <motion.div className="container relative z-10 mx-auto px-4 sm:px-6" style={{ opacity: opacitySection }}>
         {/* Problems Section */}
@@ -558,34 +570,42 @@ export default function BenefitsSection() {
         </motion.div>
       </motion.div>
 
-      {/* Floating elements - fewer on mobile */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(typeof window !== "undefined" ? (window.innerWidth < 768 ? 5 : 10) : 5)].map((_, i) => (
+      {/* Floating elements - solo renderizar en el cliente con valores fijos */}
+      {isMounted && (
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Usar valores fijos en lugar de aleatorios */}
           <motion.div
-            key={i}
             className="absolute rounded-full bg-purple-100 border border-purple-200"
-            style={{
-              width:
-                Math.random() * 40 + 10 + (typeof window !== "undefined" ? (window.innerWidth < 768 ? 0 : 20) : 10),
-              height:
-                Math.random() * 40 + 10 + (typeof window !== "undefined" ? (window.innerWidth < 768 ? 0 : 20) : 10),
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              x: [0, Math.random() * 10 - 5, 0],
-              opacity: [0.1, 0.3, 0.1],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Number.POSITIVE_INFINITY,
-              delay: Math.random() * 5,
-            }}
+            style={{ width: "30px", height: "30px", left: "10%", top: "20%" }}
+            animate={{ y: [0, -20, 0], opacity: [0.1, 0.3, 0.1] }}
+            transition={{ duration: 15, repeat: Number.POSITIVE_INFINITY }}
           />
-        ))}
-      </div>
+          <motion.div
+            className="absolute rounded-full bg-purple-100 border border-purple-200"
+            style={{ width: "20px", height: "20px", left: "30%", top: "50%" }}
+            animate={{ y: [0, -15, 0], opacity: [0.1, 0.3, 0.1] }}
+            transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, delay: 1 }}
+          />
+          <motion.div
+            className="absolute rounded-full bg-purple-100 border border-purple-200"
+            style={{ width: "40px", height: "40px", left: "70%", top: "30%" }}
+            animate={{ y: [0, -25, 0], opacity: [0.1, 0.3, 0.1] }}
+            transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY, delay: 2 }}
+          />
+          <motion.div
+            className="absolute rounded-full bg-purple-100 border border-purple-200"
+            style={{ width: "25px", height: "25px", left: "85%", top: "60%" }}
+            animate={{ y: [0, -10, 0], opacity: [0.1, 0.3, 0.1] }}
+            transition={{ duration: 10, repeat: Number.POSITIVE_INFINITY, delay: 3 }}
+          />
+          <motion.div
+            className="absolute rounded-full bg-purple-100 border border-purple-200"
+            style={{ width: "35px", height: "35px", left: "50%", top: "80%" }}
+            animate={{ y: [0, -20, 0], opacity: [0.1, 0.3, 0.1] }}
+            transition={{ duration: 14, repeat: Number.POSITIVE_INFINITY, delay: 4 }}
+          />
+        </div>
+      )}
     </section>
   )
 }
-
