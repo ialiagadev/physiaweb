@@ -216,11 +216,22 @@ export default function ComparisonSection() {
                   <Package className="h-8 w-8 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-purple-800 mb-4">Herramienta todo en 1</h3>
-                  <p className="text-purple-900">
-                    Facturación, agenda, recordatorios a pacientes, historial clínico...Physia te lo ofrece todo en un
-                    mismo sitio.
-                  </p>
+                  <h3 className="text-2xl font-semibold text-purple-800 mb-4">Herramienta Todo en Uno</h3>
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-purple-600 mt-1 flex-shrink-0" />
+                      <p className="text-purple-900">
+                        Centraliza todas tus gestiones: historial clínico, agenda, facturación y firma de documentación.
+                      </p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-purple-600 mt-1 flex-shrink-0" />
+                      <p className="text-purple-900">
+                        Accede a toda la información de tus pacientes desde cualquier dispositivo y en cualquier
+                        momento.
+                      </p>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -241,11 +252,21 @@ export default function ComparisonSection() {
                   <Coins className="h-8 w-8 text-purple-600" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-purple-800 mb-4">Precio competitivo</h3>
-                  <p className="text-purple-900">
-                    Gracias a la Inteligencia Artificial podemos ofrecerte una herramienta todoterreno de gran calidad a
-                    un precio asequible.
-                  </p>
+                  <h3 className="text-2xl font-semibold text-purple-800 mb-4">Precio Competitivo</h3>
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-purple-600 mt-1 flex-shrink-0" />
+                      <p className="text-purple-900">
+                        Obtén una herramienta completa a un precio asequible gracias a nuestra tecnología de IA.
+                      </p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <CheckCircle className="h-5 w-5 text-purple-600 mt-1 flex-shrink-0" />
+                      <p className="text-purple-900">
+                        Ahorra costes al no necesitar múltiples herramientas para gestionar tu clínica.
+                      </p>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </div>
@@ -265,7 +286,7 @@ export default function ComparisonSection() {
               size="lg"
               className="bg-gradient-to-r from-purple-600 to-purple-800 text-white px-8 py-6 rounded-full font-medium shadow-lg hover:shadow-purple-200 transition-all transform hover:scale-105"
             >
-              Ver los Planes
+              VER LOS PLANES
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>

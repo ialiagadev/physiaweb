@@ -34,11 +34,11 @@ export default function Footer() {
             </a>
 
             <a
-              href="mailto:info@physia.es"
+              href="mailto:mvalera@myphysia.com"
               className="flex items-center text-gray-600 hover:text-purple-700 transition-colors mx-4"
             >
               <Mail className="h-5 w-5" />
-              <span className="ml-2 text-sm">info@physia.es</span>
+              <span className="ml-2 text-sm">mvalera@myphysia.com</span>
             </a>
           </div>
         </div>

@@ -161,7 +161,7 @@ const GradientDecoText: React.FC = () => {
                 size="lg"
                 className="relative bg-gradient-to-r from-purple-600 to-purple-800 hover:from-purple-700 hover:to-purple-900 text-white font-medium shadow-lg shadow-purple-500/20 px-8 py-6 rounded-full"
               >
-                Prueba Gratis
+                PRUEBA GRATIS 
                 <Sparkles className="ml-2 h-4 w-4" />
               </Button>
             </motion.div>
