@@ -2,11 +2,11 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Users2, CalendarDays, Bell, Mail, Phone, Database, Smartphone, Sparkles, Star, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ReminderCalculator from "@/components/reminider-calculator"
-import Script from "next/script"
+import { useRouter, usePathname } from "next/navigation"
 
 // Tipos de planes
 type BillingPeriod = "monthly" | "biannual" | "annual"
@@ -45,28 +45,37 @@ const FeatureItem = ({ feature }: { feature: PlanFeature }) => (
   </li>
 )
 
-// Componente TidyCal que solo se renderiza en el cliente
+// Componente TidyCal con iframe - Altura aumentada significativamente
 const TidyCalEmbed = () => {
-  const [isClient, setIsClient] = useState(false)
-
-  useEffect(() => {
-    setIsClient(true)
-  }, [])
-
-  if (!isClient) {
-    return <div className="h-96 bg-gray-100 rounded-lg animate-pulse"></div>
-  }
-
   return (
-    <>
-      <div className="tidycal-embed" data-path="gsfisioterapiaclientes/physia"></div>
-      <Script src="https://asset-tidycal.b-cdn.net/js/embed.js" strategy="afterInteractive" />
-    </>
+    <div className="w-full overflow-hidden">
+      <iframe
+        src="https://tidycal.com/gsfisioterapiaclientes/physia"
+        frameBorder="0"
+        style={{
+          width: "100%",
+          height: "1200px",
+          border: 0,
+          overflow: "hidden",
+          display: "block",
+        }}
+        scrolling="no"
+        allowFullScreen
+      ></iframe>
+    </div>
   )
 }
 
 export default function PricingPage() {
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly")
+  const router = useRouter()
+  const pathname = usePathname()
+  const tidyCalKey = useRef(`tidycal-${Date.now()}`)
+
+  // Regenerar la key del componente TidyCal cuando cambia la ruta
+  useEffect(() => {
+    tidyCalKey.current = `tidycal-${Date.now()}`
+  }, [pathname])
 
   // Características de cada plan
   const plans = [
@@ -256,9 +265,11 @@ export default function PricingPage() {
         <div className="mt-24 max-w-3xl mx-auto px-4">
           <h2 className="text-3xl font-bold text-center text-purple-900 mb-8">¿Tienes dudas? Te llamamos</h2>
 
-          {/* TidyCal Embed */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-purple-100">
-            <TidyCalEmbed />
+          {/* TidyCal Embed con key única para forzar remontaje */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-purple-100 overflow-hidden">
+            <div key={tidyCalKey.current}>
+              <TidyCalEmbed />
+            </div>
           </div>
         </div>
       </div>
