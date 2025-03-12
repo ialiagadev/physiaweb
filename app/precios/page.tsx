@@ -2,10 +2,11 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Users2, CalendarDays, Bell, Mail, Phone, Database, Smartphone, Sparkles, Star, Zap } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import ReminderCalculator from "@/components/reminider-calculator"
+import Script from "next/script"
 
 // Tipos de planes
 type BillingPeriod = "monthly" | "biannual" | "annual"
@@ -43,6 +44,26 @@ const FeatureItem = ({ feature }: { feature: PlanFeature }) => (
     <span className={feature.highlight ? "text-purple-900" : "text-gray-700"}>{feature.text}</span>
   </li>
 )
+
+// Componente TidyCal que solo se renderiza en el cliente
+const TidyCalEmbed = () => {
+  const [isClient, setIsClient] = useState(false)
+
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
+  if (!isClient) {
+    return <div className="h-96 bg-gray-100 rounded-lg animate-pulse"></div>
+  }
+
+  return (
+    <>
+      <div className="tidycal-embed" data-path="gsfisioterapiaclientes/physia"></div>
+      <Script src="https://asset-tidycal.b-cdn.net/js/embed.js" strategy="afterInteractive" />
+    </>
+  )
+}
 
 export default function PricingPage() {
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>("monthly")
@@ -229,10 +250,19 @@ export default function PricingPage() {
 
         {/* Nota IVA */}
         <p className="text-center text-gray-500 mt-12">*IVA no incluido</p>
-        <ReminderCalculator/>
+        <ReminderCalculator />
+
+        {/* TidyCal Calendar Section */}
+        <div className="mt-24 max-w-3xl mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center text-purple-900 mb-8">¿Tienes dudas? Te llamamos</h2>
+
+          {/* TidyCal Embed */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 border border-purple-100">
+            <TidyCalEmbed />
+          </div>
+        </div>
       </div>
     </section>
-    
   )
 }
 

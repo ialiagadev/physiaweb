@@ -1,21 +1,10 @@
 "use client"
 
 import type React from "react"
-
 import { useRef, useState } from "react"
 import { useInView } from "framer-motion"
-import {
-  Bot,
-  Calendar,
-  Bell,
-  UserCheck,
-  FileText,
-  Receipt,
-  FileSignature,
-  MessageSquare,
-  Sparkles,
-  ChevronDown,
-} from "lucide-react"
+import Image from "next/image"
+import { Bot, Calendar, Bell, UserCheck, FileText, Receipt, FileSignature, MessageSquare, Sparkles, ChevronDown } from 'lucide-react'
 import { motion } from "framer-motion"
 
 interface FeatureItemProps {
@@ -23,6 +12,7 @@ interface FeatureItemProps {
   title: string
   description: string
   index: number
+  image?: string
 }
 
 // Componente para el efecto de resaltado del título
@@ -40,7 +30,7 @@ const HighlightedText = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const FeatureItem = ({ icon, title, description, index }: FeatureItemProps) => {
+const FeatureItem = ({ icon, title, description, index, image }: FeatureItemProps) => {
   const itemRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(itemRef, { once: true, amount: 0.3 })
   const isEven = index % 2 === 0
@@ -52,7 +42,7 @@ const FeatureItem = ({ icon, title, description, index }: FeatureItemProps) => {
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className={`flex gap-4 sm:gap-6 md:gap-8 mb-12 md:mb-16 ${isEven ? "md:flex-row" : "md:flex-row-reverse"} flex-col`}
+      className={`flex gap-4 sm:gap-6 md:gap-10 lg:gap-16 mb-16 md:mb-24 ${isEven ? "md:flex-row" : "md:flex-row-reverse"} flex-col`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -75,9 +65,9 @@ const FeatureItem = ({ icon, title, description, index }: FeatureItemProps) => {
           />
 
           {/* Icon container */}
-          <div className="relative flex items-center justify-center w-16 h-16 sm:w-18 sm:h-18 md:w-20 md:h-20 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 shadow-lg">
+          <div className="relative flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-purple-400 to-purple-600 shadow-lg">
             <motion.div
-              className="text-white h-7 w-7 md:h-8 md:w-8"
+              className="text-white h-8 w-8 md:h-10 md:w-10"
               animate={{
                 scale: isHovered ? [1, 1.1, 1] : 1,
               }}
@@ -90,7 +80,7 @@ const FeatureItem = ({ icon, title, description, index }: FeatureItemProps) => {
           {/* Línea conectora con animación de pulso */}
           {index < 7 && (
             <motion.div
-              className="hidden md:block absolute top-full left-1/2 w-0.5 h-16 bg-gradient-to-b from-purple-400/50 to-transparent -translate-x-1/2"
+              className="hidden md:block absolute top-full left-1/2 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent -translate-x-1/2"
               animate={{
                 opacity: isHovered ? [0.5, 1, 0.5] : 0.5,
               }}
@@ -100,16 +90,47 @@ const FeatureItem = ({ icon, title, description, index }: FeatureItemProps) => {
         </div>
       </div>
 
-      <div className="flex-1 max-w-full md:max-w-xl">
+      <div className="flex-1 max-w-full md:max-w-2xl">
         <motion.div
-          className="p-5 sm:p-6 md:p-8 rounded-xl md:rounded-2xl bg-white/80 backdrop-blur-sm border border-purple-100 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
+          className="p-6 sm:p-8 md:p-10 rounded-xl md:rounded-2xl bg-white/80 backdrop-blur-sm border border-purple-100 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden"
           whileHover={{ y: -5 }}
         >
           {/* Efecto de gradiente en la esquina */}
           <div className="absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-purple-400/20 to-transparent rounded-full blur-md" />
 
-          <h3 className="text-xl sm:text-2xl font-bold text-purple-900 mb-2 sm:mb-3">{title}</h3>
-          <p className="text-sm sm:text-base text-purple-700/80 leading-relaxed">{description}</p>
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-900 mb-3 sm:mb-4">{title}</h3>
+          <p className="text-sm sm:text-base md:text-lg text-purple-700/80 leading-relaxed mb-6">{description}</p>
+          
+          {/* Imagen de la característica si existe */}
+          {image && (
+            <motion.div 
+              className="mt-6 rounded-lg overflow-hidden shadow-xl border-4 border-white"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="relative h-[300px] sm:h-[350px] md:h-[400px] w-full overflow-hidden">
+                <motion.div
+                  className="w-full h-full"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <Image 
+                    src={image || "/placeholder.svg"} 
+                    alt={title}
+                    fill
+                    className="object-cover object-center"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={index < 2}
+                  />
+                </motion.div>
+                
+                {/* Overlay con gradiente sutil */}
+                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+            </motion.div>
+          )}
 
           {/* Indicador de hover */}
           <motion.div
@@ -134,12 +155,14 @@ export default function FeaturesPage() {
       title: "Asistente Virtual con IA",
       description:
         "Automatiza la comunicación con tus pacientes: agenda citas, responde dudas y gestiona recordatorios en tiempo real, mejorando la experiencia para tus pacientes.",
+      image: "/2.png"
     },
     {
       icon: <Calendar className="h-full w-full" />,
       title: "Calendario inteligente",
       description:
         "La IA de Physia te organiza las citas de forma automática, evitando solapamientos y optimizando la disponibilidad de cada profesional. Physia gestiona tu agenda en tiempo real, reajustando horarios y priorizando según necesidades. Tú decides las reglas, y Physia se encarga de que todo funcione sin errores.",
+      image: "/3.png"
     },
     {
       icon: <Bell className="h-full w-full" />,
@@ -152,6 +175,7 @@ export default function FeaturesPage() {
       title: "Seguimientos personalizados de tus pacientes",
       description:
         "Envía seguimientos automatizados y personalizados después de cada sesión, para estar presente en la recuperación del paciente. Mantén el contacto con tus pacientes y mejora su recuperación.",
+      image: "/4.png"
     },
     {
       icon: <FileText className="h-full w-full" />,
@@ -328,7 +352,7 @@ export default function FeaturesPage() {
         </motion.div>
 
         {/* Features */}
-        <div className="max-w-md sm:max-w-2xl md:max-w-3xl lg:max-w-5xl mx-auto">
+        <div className="max-w-md sm:max-w-2xl md:max-w-4xl lg:max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <FeatureItem
               key={index}
@@ -336,11 +360,31 @@ export default function FeaturesPage() {
               title={feature.title}
               description={feature.description}
               index={index}
+              image={feature.image}
             />
           ))}
         </div>
+
+        {/* CTA final */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="text-center mt-16 mb-8"
+        >
+          <h3 className="text-xl sm:text-2xl font-bold text-purple-900 mb-4">¿Listo para transformar tu clínica?</h3>
+          <div className="flex justify-center">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium py-3 px-8 rounded-full shadow-lg flex items-center gap-2"
+            >
+              <Sparkles className="h-5 w-5" />
+              <span>Comenzar prueba gratuita</span>
+            </motion.button>
+          </div>
+        </motion.div>
       </div>
     </section>
   )
 }
-
