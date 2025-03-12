@@ -368,7 +368,7 @@ export default function Hero() {
             transition={{ duration: 0.5, delay: 0.7 }}
           >
             <AnimatedButton href="/funcionalidades">
-              Descubre qué hace Physia
+              DESCUBRE QUÉ HACE PHYSIA
               <ChevronRight className="ml-2 h-4 w-4" />
             </AnimatedButton>
           </motion.div>

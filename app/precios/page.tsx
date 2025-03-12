@@ -7,6 +7,7 @@ import { Users2, CalendarDays, Bell, Mail, Phone, Database, Smartphone, Sparkles
 import { Button } from "@/components/ui/button"
 import ReminderCalculator from "@/components/reminider-calculator"
 import { useRouter, usePathname } from "next/navigation"
+import Link from "next/link"
 
 // Tipos de planes
 type BillingPeriod = "monthly" | "biannual" | "annual"
@@ -244,13 +245,15 @@ export default function PricingPage() {
                   >
                     Empezar ahora
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full border-purple-200 text-purple-700 hover:bg-purple-50"
-                    size="lg"
-                  >
-                    Prueba gratis
-                  </Button>
+                  <Link href="/prueba-gratis" className="w-full block">
+                    <Button
+                      variant="outline"
+                      className="w-full border-purple-200 text-purple-700 hover:bg-purple-50"
+                      size="lg"
+                    >
+                      Prueba gratis
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

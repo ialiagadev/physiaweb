@@ -175,7 +175,7 @@ export default function Navbar() {
               <Link href="/prueba-gratis">
                 <button className="flex items-center gap-1.5 bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-500 hover:to-purple-400 text-white font-medium py-2 px-4 rounded-full transition-all duration-300">
                   <Sparkles className="h-4 w-4" />
-                  <span>Prueba Gratis</span>
+                  <span>Prueba gratis</span>
                 </button>
               </Link>
             </motion.div>
@@ -273,7 +273,7 @@ export default function Navbar() {
                 <Link href="/prueba-gratis" className="block" onClick={() => setIsMobileMenuOpen(false)}>
                   <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium py-3 px-4 rounded-md">
                     <Sparkles className="h-4 w-4" />
-                    <span>Comenzar Prueba Gratuita</span>
+                    <span>Comenzar prueba gratuita</span>
                   </button>
                 </Link>
               </motion.div>
