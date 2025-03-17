@@ -349,13 +349,13 @@ export default function BenefitsSection() {
       icon: <Robot className="h-full w-full" />,
       title: "Libérate de tareas repetitivas",
       description:
-        "Automatiza procesos gracias a la IA. Physia te permite automatizar tareas como el envío de recordatorios, la coordinación de calendario, la firma de documentación...",
+        "Automatiza procesos gracias a la IA. Physia te permite automatizar tareas como el envío de recordatorios, la coordinación de calendario, seguimiento de pacientes...",
     },
     {
       icon: <FolderOpen className="h-full w-full" />,
       title: "Todo en uno",
       description:
-        "Con Physia puedes tener todas las gestiones de tu clínica centralizadas en una sola herramienta: historial médico, calendario, facturación y firma de documentación, entre otras muchas más funcionalidades.",
+        "Con Physia puedes tener toda la gestión del calendario centralizada en una sola herramienta: agendar, modificar, cancelar, recordar citas a los pacientes, mandar recordatorios de citas, entre otras muchas más funcionalidades.",
     },
     {
       icon: <Settings className="h-full w-full" />,

@@ -221,7 +221,8 @@ export default function ComparisonSection() {
                     <li className="flex items-start gap-3">
                       <CheckCircle className="h-5 w-5 text-purple-600 mt-1 flex-shrink-0" />
                       <p className="text-purple-900">
-                        Centraliza todas tus gestiones: historial clínico, agenda, facturación y firma de documentación.
+                      Centraliza todas tus gestiones: Olvídate de la gestión manual. El asistente de IA programa, modifica y cancela citas, y avisa por WhatsApp.
+
                       </p>
                     </li>
                     <li className="flex items-start gap-3">

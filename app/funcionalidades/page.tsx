@@ -4,7 +4,23 @@ import type React from "react"
 import { useRef, useState } from "react"
 import { useInView } from "framer-motion"
 import Image from "next/image"
-import { Bot, Calendar, Bell, UserCheck, FileText, Receipt, FileSignature, MessageSquare, Sparkles, ChevronDown } from 'lucide-react'
+import {
+  Bot,
+  Calendar,
+  Bell,
+  UserCheck,
+  Star,
+  Globe,
+  CreditCard,
+  Users,
+  Repeat,
+  Link,
+  BarChart,
+  Sparkles,
+  ChevronDown,
+  MessageSquare,
+  Clock,
+} from "lucide-react"
 import { motion } from "framer-motion"
 
 interface FeatureItemProps {
@@ -12,7 +28,10 @@ interface FeatureItemProps {
   title: string
   description: string
   index: number
-  image?: string
+  media?: {
+    type: "image" | "video"
+    src: string
+  }
 }
 
 // Componente para el efecto de resaltado del título
@@ -30,7 +49,7 @@ const HighlightedText = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-const FeatureItem = ({ icon, title, description, index, image }: FeatureItemProps) => {
+const FeatureItem = ({ icon, title, description, index, media }: FeatureItemProps) => {
   const itemRef = useRef<HTMLDivElement>(null)
   const isInView = useInView(itemRef, { once: true, amount: 0.3 })
   const isEven = index % 2 === 0
@@ -78,7 +97,7 @@ const FeatureItem = ({ icon, title, description, index, image }: FeatureItemProp
           </div>
 
           {/* Línea conectora con animación de pulso */}
-          {index < 7 && (
+          {index < 15 && (
             <motion.div
               className="hidden md:block absolute top-full left-1/2 w-0.5 h-20 bg-gradient-to-b from-purple-400/50 to-transparent -translate-x-1/2"
               animate={{
@@ -100,35 +119,45 @@ const FeatureItem = ({ icon, title, description, index, image }: FeatureItemProp
 
           <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-900 mb-3 sm:mb-4">{title}</h3>
           <p className="text-sm sm:text-base md:text-lg text-purple-700/80 leading-relaxed mb-6">{description}</p>
-          
-          {/* Imagen de la característica si existe */}
-          {image && (
-            <motion.div 
+
+          {/* Contenido multimedia (imagen o video) */}
+          {media && (
+            <motion.div
               className="mt-6 rounded-lg overflow-hidden shadow-xl border-4 border-white"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.2 }}
               whileHover={{ scale: 1.02 }}
             >
-              <div className="relative h-[300px] sm:h-[350px] md:h-[400px] w-full overflow-hidden">
-                <motion.div
-                  className="w-full h-full"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Image 
-                    src={image || "/placeholder.svg"} 
-                    alt={title}
-                    fill
-                    className="object-cover object-center"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority={index < 2}
-                  />
-                </motion.div>
-                
-                {/* Overlay con gradiente sutil */}
-                <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
-              </div>
+              {media.type === "image" ? (
+                <div className="relative h-[300px] sm:h-[350px] md:h-[400px] w-full overflow-hidden">
+                  <motion.div className="w-full h-full" whileHover={{ scale: 1.05 }} transition={{ duration: 0.5 }}>
+                    <Image
+                      src={media.src || "/placeholder.svg"}
+                      alt={title}
+                      fill
+                      className="object-contain md:object-cover object-center"
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      priority={index < 2}
+                    />
+                  </motion.div>
+
+                  {/* Overlay con gradiente sutil */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
+                </div>
+              ) : (
+                <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+                  <video
+                    className="absolute inset-0 w-full h-full object-cover"
+                    controls
+                    preload="metadata"
+                    poster={`/videos/thumbnails/${media.src.split("/").pop()?.replace(".mp4", "-poster.png") || "default-poster.png"}`}
+                  >
+                    <source src={media.src} type="video/mp4" />
+                    Tu navegador no soporta videos HTML5.
+                  </video>
+                </div>
+              )}
             </motion.div>
           )}
 
@@ -145,6 +174,14 @@ const FeatureItem = ({ icon, title, description, index, image }: FeatureItemProp
   )
 }
 
+const videoPosters: Record<string, string> = {
+  "asistente-virtual.mp4": "/video-thumbnails/asistente-virtual-poster.png",
+  "conversacion-plataforma.mp4": "/video-thumbnails/conversacion-plataforma-poster.png",
+  "calendario.mp4": "/video-thumbnails/calendario-poster.png",
+  "resena-google.mp4": "/video-thumbnails/resena-google-poster.png",
+  "coger-cita.mp4": "/video-thumbnails/coger-cita-poster.png",
+}
+
 export default function FeaturesPage() {
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true })
@@ -155,51 +192,112 @@ export default function FeaturesPage() {
       title: "Asistente Virtual con IA",
       description:
         "Automatiza la comunicación con tus pacientes: agenda citas, responde dudas y gestiona recordatorios en tiempo real, mejorando la experiencia para tus pacientes.",
-      image: "/2.png"
-    },
-    {
-      icon: <Calendar className="h-full w-full" />,
-      title: "Calendario inteligente",
-      description:
-        "La IA de Physia te organiza las citas de forma automática, evitando solapamientos y optimizando la disponibilidad de cada profesional. Physia gestiona tu agenda en tiempo real, reajustando horarios y priorizando según necesidades. Tú decides las reglas, y Physia se encarga de que todo funcione sin errores.",
-      image: "/3.png"
-    },
-    {
-      icon: <Bell className="h-full w-full" />,
-      title: "Recordatorios automatizados",
-      description:
-        "Evita cancelaciones de última hora y huecos en la agenda con recordatorios automáticos por WhatsApp y email. Configura cuándo y cómo se envían para que tus pacientes siempre lleguen a tiempo. Menos olvidos, menos ausencias y una agenda más optimizada.",
-    },
-    {
-      icon: <UserCheck className="h-full w-full" />,
-      title: "Seguimientos personalizados de tus pacientes",
-      description:
-        "Envía seguimientos automatizados y personalizados después de cada sesión, para estar presente en la recuperación del paciente. Mantén el contacto con tus pacientes y mejora su recuperación.",
-      image: "/4.png"
-    },
-    {
-      icon: <FileText className="h-full w-full" />,
-      title: "Historial clínico automatizado",
-      description:
-        "Accede a la información de tus pacientes en segundos con historiales clínicos organizados y siempre actualizados. Con transcripción de voz y resúmenes automáticos, todo está siempre actualizado sin esfuerzo.",
-    },
-    {
-      icon: <Receipt className="h-full w-full" />,
-      title: "Facturación simplificada",
-      description:
-        "Genera, envía y organiza facturas automáticamente. Configura pagos recurrentes, gestiona bonos y mantén un control total de tu facturación. Más claridad financiera y menos tiempo en tareas administrativas.",
-    },
-    {
-      icon: <FileSignature className="h-full w-full" />,
-      title: "Firma digital para documentación",
-      description:
-        "Recoge firmas para consentimientos y documentos legales de forma digital. Seguro, rápido y sin necesidad de imprimir nada. Agiliza procesos, evita errores y ten siempre todo archivado y accesible cuando lo necesites.",
+      media: {
+        type: "video" as const,
+        src: "/videos/asistente-virtual.mp4",
+      },
     },
     {
       icon: <MessageSquare className="h-full w-full" />,
       title: "WhatsApp API: todo en tu propio número",
       description:
         "Toda la comunicación automatizada se hace desde tu número de WhatsApp pero con la inteligencia de Physia. Sin apps extra, sin líos. Tus pacientes te contactan como siempre, pero ahora con respuestas automatizadas.",
+      media: {
+        type: "video" as const,
+        src: "/videos/conversacion-plataforma.mp4",
+      },
+    },
+    {
+      icon: <Calendar className="h-full w-full" />,
+      title: "Calendario inteligente",
+      description:
+        "La IA de Physia te organiza las citas de forma automática, evitando solapamientos y optimizando la disponibilidad de cada profesional. Physia gestiona tu agenda en tiempo real, reajustando horarios y priorizando según necesidades. Tú decides las reglas, y Physia se encarga de que todo funcione sin errores.",
+      media: {
+        type: "video" as const,
+        src: "/videos/calendario.mp4",
+      },
+    },
+    {
+      icon: <Clock className="h-full w-full" />,
+      title: "Reserva de citas online",
+      description:
+        "Permite a tus pacientes reservar citas directamente desde WhatsApp o tu página web. El sistema verifica la disponibilidad en tiempo real y confirma la cita automáticamente, reduciendo el trabajo administrativo y mejorando la experiencia del paciente.",
+      media: {
+        type: "video" as const,
+        src: "/videos/coger-cita.mp4",
+      },
+    },
+    {
+      icon: <Bell className="h-full w-full" />,
+      title: "Recordatorios automatizados",
+      description:
+        "Evita cancelaciones de última hora y huecos en la agenda con recordatorios automáticos por WhatsApp y email. Configura cuándo y cómo se envían para que tus pacientes siempre lleguen a tiempo. Menos olvidos, menos ausencias y una agenda más optimizada.",
+      media: {
+        type: "image" as const,
+        src: "/recordatorio-cita.png",
+      },
+    },
+    {
+      icon: <UserCheck className="h-full w-full" />,
+      title: "Seguimientos personalizados de tus pacientes",
+      description:
+        "Envía seguimientos automatizados y personalizados después de cada sesión, para estar presente en la recuperación del paciente. Mantén el contacto con tus pacientes y mejora su recuperación.",
+      media: {
+        type: "image" as const,
+        src: "/seguimiento-ia.png",
+      },
+    },
+    {
+      icon: <Star className="h-full w-full" />,
+      title: "Gana posicionamiento en Google",
+      description:
+        "Tras cada cita, tu asistente virtual envía automáticamente un enlace para que los pacientes dejen reseñas. Así, mejorarás tu reputación online y subirás puestos en los resultados de búsqueda.",
+      media: {
+        type: "video" as const,
+        src: "/videos/resena-google.mp4",
+      },
+    },
+    {
+      icon: <Globe className="h-full w-full" />,
+      title: "Atención 24/7 personalizada en cualquier idioma",
+      description:
+        "Ofrece soporte continuo a tus pacientes sin límites de horario o idioma. Tu asistente virtual de IA resuelve dudas y gestiona citas, brindando una experiencia realmente global.",
+    },
+    {
+      icon: <Calendar className="h-full w-full" />,
+      title: "Sincroniza tu calendario con Google Calendar",
+      description:
+        "Mantén tu agenda siempre actualizada. Las citas que gestiones en Physia se reflejan automáticamente en tu Google Calendar, evitando solapamientos y confusiones.",
+    },
+    {
+      icon: <CreditCard className="h-full w-full" />,
+      title: "Integra pagos para reserva de citas",
+      description:
+        "Configura un sistema de cobro anticipado o recurrente para tus pacientes. Podrán pagar antes de la cita y tú te aseguras de agilizar la facturación y reducir ausencias.",
+    },
+    {
+      icon: <Users className="h-full w-full" />,
+      title: "Citas individuales y grupales",
+      description:
+        "Gestiona desde sesiones uno a uno hasta talleres o eventos con varios participantes a la vez. El sistema se adapta a la dinámica de tu negocio sin complicaciones.",
+    },
+    {
+      icon: <Repeat className="h-full w-full" />,
+      title: "Citas recurrentes",
+      description:
+        "Programa automáticamente sesiones periódicas para tus pacientes. Ahorrarás tiempo y ellos tendrán asegurada su plaza de forma regular.",
+    },
+    {
+      icon: <Link className="h-full w-full" />,
+      title: "Integra el calendario en tu web",
+      description:
+        "Incorpora el calendario de reservas en tu sitio web con un solo clic. Tus pacientes podrán ver la disponibilidad en tiempo real y agendar sus citas sin salir de tu página.",
+    },
+    {
+      icon: <BarChart className="h-full w-full" />,
+      title: "Informes y análisis de citas",
+      description:
+        "Consulta estadísticas y reportes para tomar decisiones más acertadas. Identifica picos de demanda, niveles de ocupación y patrones de uso de tu servicio en segundos.",
     },
   ]
 
@@ -360,7 +458,7 @@ export default function FeaturesPage() {
               title={feature.title}
               description={feature.description}
               index={index}
-              image={feature.image}
+              media={feature.media}
             />
           ))}
         </div>
@@ -374,17 +472,19 @@ export default function FeaturesPage() {
         >
           <h3 className="text-xl sm:text-2xl font-bold text-purple-900 mb-4">¿Listo para transformar tu clínica?</h3>
           <div className="flex justify-center">
-            <motion.button
+            <motion.a
+              href="/prueba-gratis"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium py-3 px-8 rounded-full shadow-lg flex items-center gap-2"
             >
               <Sparkles className="h-5 w-5" />
               <span>Comenzar prueba gratuita</span>
-            </motion.button>
+            </motion.a>
           </div>
         </motion.div>
       </div>
     </section>
   )
 }
+

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Menu, X, Brain, Sparkles, MessageCircle } from 'lucide-react'
+import { Menu, X, Brain, Sparkles, MessageCircle } from "lucide-react"
 
 const navLinks = [
   { name: "Inicio", href: "/" },
@@ -22,28 +22,28 @@ export default function Navbar() {
   // Handle client-side only code after mounting
   useEffect(() => {
     setMounted(true)
-    
+
     // Initial scroll check
     if (window.scrollY > 10) {
       setIsScrolled(true)
     }
-    
+
     // Scroll event listener
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10)
     }
-    
+
     window.addEventListener("scroll", handleScroll)
-    
+
     // Resize event listener
     const handleResize = () => {
       if (window.innerWidth > 768 && isMobileMenuOpen) {
         setIsMobileMenuOpen(false)
       }
     }
-    
+
     window.addEventListener("resize", handleResize)
-    
+
     // Cleanup
     return () => {
       window.removeEventListener("scroll", handleScroll)
@@ -66,12 +66,10 @@ export default function Navbar() {
                 Physia
               </span>
             </div>
-            
+
             {/* Static placeholder for navigation */}
-            <div className="hidden md:flex items-center space-x-8">
-              {/* Placeholder for nav links */}
-            </div>
-            
+            <div className="hidden md:flex items-center space-x-8">{/* Placeholder for nav links */}</div>
+
             {/* Mobile menu button placeholder */}
             <div className="md:hidden">
               <button className="p-2 rounded-md text-purple-900">
@@ -87,50 +85,49 @@ export default function Navbar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-white/80 backdrop-blur-md shadow-md py-2"
-          : "bg-transparent py-4"
+        isScrolled ? "bg-white/80 backdrop-blur-md shadow-md py-2" : "bg-transparent py-4"
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center">
-            <motion.div
-              className="relative flex items-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              {/* Logo background glow */}
+          {/* Logo y navegación principal juntos */}
+          <div className="flex items-center">
+            {/* Logo */}
+            <Link href="/" className="flex items-center mr-4">
               <motion.div
-                className="absolute -inset-2 rounded-full bg-purple-200/50 blur-md"
-                animate={{
-                  scale: [1, 1.05, 1],
-                  opacity: [0.5, 0.7, 0.5],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Number.POSITIVE_INFINITY,
-                  repeatType: "reverse",
-                }}
-              />
+                className="relative flex items-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                {/* Logo background glow */}
+                <motion.div
+                  className="absolute -inset-2 rounded-full bg-purple-200/50 blur-md"
+                  animate={{
+                    scale: [1, 1.05, 1],
+                    opacity: [0.5, 0.7, 0.5],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Number.POSITIVE_INFINITY,
+                    repeatType: "reverse",
+                  }}
+                />
 
-              {/* Logo icon */}
-              <div className="relative z-10 bg-gradient-to-br from-purple-600 to-purple-800 p-2 rounded-full mr-2">
-                <Brain className="h-6 w-6 text-white" />
-              </div>
+                {/* Logo icon */}
+                <div className="relative z-10 bg-gradient-to-br from-purple-600 to-purple-800 p-2 rounded-full mr-2">
+                  <Brain className="h-6 w-6 text-white" />
+                </div>
 
-              {/* Logo text */}
-              <span className="relative z-10 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-500">
-                Physia
-              </span>
-            </motion.div>
-          </Link>
+                {/* Logo text */}
+                <span className="relative z-10 text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-700 to-purple-500">
+                  Physia
+                </span>
+              </motion.div>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center">
-            <nav className="flex items-center space-x-1 mr-4">
+            {/* Navegación principal - directamente al lado del logo */}
+            <nav className="hidden md:flex items-center space-x-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
@@ -147,7 +144,10 @@ export default function Navbar() {
                 </Link>
               ))}
             </nav>
+          </div>
 
+          {/* Botones de acción en escritorio */}
+          <div className="hidden md:flex items-center">
             {/* WhatsApp Button */}
             <motion.div
               whileHover={{ scale: 1.08 }}
@@ -284,3 +284,4 @@ export default function Navbar() {
     </header>
   )
 }
+

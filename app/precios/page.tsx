@@ -3,9 +3,22 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { Users2, CalendarDays, Bell, Mail, Phone, Database, Smartphone, Sparkles, Star, Zap } from "lucide-react"
+import {
+  Users2,
+  Bell,
+  Phone,
+  Database,
+  Smartphone,
+  Sparkles,
+  Star,
+  Zap,
+  Bot,
+  CreditCard,
+  Calendar,
+  Check,
+  Globe,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
-import ReminderCalculator from "@/components/reminider-calculator"
 import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
 
@@ -15,24 +28,25 @@ type PlanFeature = {
   text: string
   icon: React.ReactNode
   highlight?: boolean
+  value?: string | number | React.ReactNode
 }
 
 // Configuración de precios exactos según las imágenes
 const PRICING = {
   initial: {
-    monthly: 110,
-    biannual: 99,
-    annual: 88,
+    monthly: 75,
+    biannual: 68,
+    annual: 60,
   },
   advanced: {
-    monthly: 160,
-    biannual: 144,
-    annual: 128,
+    monthly: 150,
+    biannual: 135,
+    annual: 120,
   },
   enterprise: {
-    monthly: 240,
-    biannual: 216,
-    annual: 192,
+    monthly: 200,
+    biannual: 180,
+    annual: 160,
   },
 }
 
@@ -42,11 +56,14 @@ const FeatureItem = ({ feature }: { feature: PlanFeature }) => (
     <span className={`rounded-full p-1 ${feature.highlight ? "bg-purple-100 text-purple-700" : "text-purple-600"}`}>
       {feature.icon}
     </span>
-    <span className={feature.highlight ? "text-purple-900" : "text-gray-700"}>{feature.text}</span>
+    <div className="flex-1">
+      <span className={feature.highlight ? "text-purple-900" : "text-gray-700"}>{feature.text}</span>
+      {feature.value && <span className="ml-2 font-semibold text-purple-800">{feature.value}</span>}
+    </div>
   </li>
 )
 
-// Componente TidyCal con iframe - Altura aumentada significativamente
+// Modificar el componente TidyCal para habilitar el scroll
 const TidyCalEmbed = () => {
   return (
     <div className="w-full overflow-hidden">
@@ -55,12 +72,12 @@ const TidyCalEmbed = () => {
         frameBorder="0"
         style={{
           width: "100%",
-          height: "1200px",
+          height: "650px", // Altura ajustada para mostrar el calendario completo
           border: 0,
-          overflow: "hidden",
+          overflow: "auto", // Cambiado a "auto" para permitir scroll
           display: "block",
         }}
-        scrolling="no"
+        scrolling="yes" // Cambiado a "yes" para permitir scroll
         allowFullScreen
       ></iframe>
     </div>
@@ -85,15 +102,56 @@ export default function PricingPage() {
       description: "Para clínicas de 1 a 2 profesionales que quieren simplificar la gestión del día a día",
       price: PRICING.initial[billingPeriod],
       features: [
-        { icon: <Users2 className="h-5 w-5" />, text: "1 administrador", highlight: true },
-        { icon: <Users2 className="h-5 w-5" />, text: "2 profesionales", highlight: true },
-        { icon: <CalendarDays className="h-5 w-5" />, text: "Gestión de hasta 5 calendarios", highlight: true },
+        {
+          icon: <Users2 className="h-5 w-5" />,
+          text: "Administradores",
+          highlight: true,
+          value: "2",
+        },
+        {
+          icon: <Bot className="h-5 w-5" />,
+          text: "Usuarios IA",
+          highlight: true,
+          value: "1",
+        },
+        {
+          icon: <Phone className="h-5 w-5" />,
+          text: "Números de teléfono",
+          highlight: true,
+          value: "1",
+        },
         {
           icon: <Bell className="h-5 w-5" />,
-          text: "Recordatorios y seguimientos automáticos vía WhatsApp: hasta 120 al mes (*)",
+          text: "Citas y recordatorios",
+          highlight: true,
+          value: "100",
         },
-        { icon: <Mail className="h-5 w-5" />, text: "Atención personalizada vía Correo y WhatsApp" },
-        { icon: <Database className="h-5 w-5" />, text: "Servicio de migración incluido (valorado en 300€)" },
+        {
+          icon: <Calendar className="h-5 w-5" />,
+          text: "Sincronización con Google Calendar",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <CreditCard className="h-5 w-5" />,
+          text: "Pagos integrados",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <Database className="h-5 w-5" />,
+          text: "Servicio de migración incluido (valorado en 300€)",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <Smartphone className="h-5 w-5" />,
+          text: "App",
+          value: <span className="text-purple-600 italic">(próximamente)</span>,
+        },
+        {
+          icon: <Globe className="h-5 w-5" />,
+          text: "Coste Web",
+          highlight: true,
+          value: "75€",
+        },
       ],
       color: "from-blue-400 to-purple-500",
       icon: <Users2 className="h-8 w-8" />,
@@ -104,16 +162,56 @@ export default function PricingPage() {
         "Ideal para clínicas de hasta 10 profesionales que necesitan funcionalidades adicionales para la gestión diaria",
       price: PRICING.advanced[billingPeriod],
       features: [
-        { icon: <Users2 className="h-5 w-5" />, text: "3 administradores", highlight: true },
-        { icon: <Users2 className="h-5 w-5" />, text: "10 profesionales", highlight: true },
-        { icon: <CalendarDays className="h-5 w-5" />, text: "Gestión de hasta 10 calendarios", highlight: true },
+        {
+          icon: <Users2 className="h-5 w-5" />,
+          text: "Administradores",
+          highlight: true,
+          value: "5",
+        },
+        {
+          icon: <Bot className="h-5 w-5" />,
+          text: "Usuarios IA",
+          highlight: true,
+          value: "2",
+        },
+        {
+          icon: <Phone className="h-5 w-5" />,
+          text: "Números de teléfono",
+          highlight: true,
+          value: "2",
+        },
         {
           icon: <Bell className="h-5 w-5" />,
-          text: "Recordatorios y seguimientos automáticos vía WhatsApp: hasta 300 al mes (*)",
+          text: "Citas y recordatorios",
+          highlight: true,
+          value: "300",
         },
-        { icon: <Phone className="h-5 w-5" />, text: "Atención personalizada vía Correo, WhatsApp y llamada" },
-        { icon: <Smartphone className="h-5 w-5" />, text: "Acceso a la app móvil" },
-        { icon: <Database className="h-5 w-5" />, text: "Servicio de migración incluido (valorado en 300€)" },
+        {
+          icon: <Calendar className="h-5 w-5" />,
+          text: "Sincronización con Google Calendar",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <CreditCard className="h-5 w-5" />,
+          text: "Pagos integrados",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <Database className="h-5 w-5" />,
+          text: "Servicio de migración incluido (valorado en 300€)",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <Smartphone className="h-5 w-5" />,
+          text: "App",
+          value: <span className="text-purple-600 italic">(próximamente)</span>,
+        },
+        {
+          icon: <Globe className="h-5 w-5" />,
+          text: "Coste Web",
+          highlight: true,
+          value: "150€",
+        },
       ],
       popular: true,
       color: "from-purple-500 to-purple-700",
@@ -124,16 +222,56 @@ export default function PricingPage() {
       description: "Para clínicas en crecimiento que necesitan funcionalidades concretas y personalización avanzada",
       price: PRICING.enterprise[billingPeriod],
       features: [
-        { icon: <Users2 className="h-5 w-5" />, text: "5 administradores", highlight: true },
-        { icon: <Users2 className="h-5 w-5" />, text: "20 profesionales", highlight: true },
-        { icon: <CalendarDays className="h-5 w-5" />, text: "Gestión de hasta 20 calendarios", highlight: true },
+        {
+          icon: <Users2 className="h-5 w-5" />,
+          text: "Administradores",
+          highlight: true,
+          value: "10",
+        },
+        {
+          icon: <Bot className="h-5 w-5" />,
+          text: "Usuarios IA",
+          highlight: true,
+          value: "4",
+        },
+        {
+          icon: <Phone className="h-5 w-5" />,
+          text: "Números de teléfono",
+          highlight: true,
+          value: "5",
+        },
         {
           icon: <Bell className="h-5 w-5" />,
-          text: "Recordatorios y seguimientos automáticos vía WhatsApp: hasta 500 al mes (*)",
+          text: "Citas y recordatorios",
+          highlight: true,
+          value: "600",
         },
-        { icon: <Phone className="h-5 w-5" />, text: "Atención prioritaria y soporte técnico especializado" },
-        { icon: <Smartphone className="h-5 w-5" />, text: "Acceso a la app móvil" },
-        { icon: <Database className="h-5 w-5" />, text: "Servicio de migración incluido (valorado en 300€)" },
+        {
+          icon: <Calendar className="h-5 w-5" />,
+          text: "Sincronización con Google Calendar",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <CreditCard className="h-5 w-5" />,
+          text: "Pagos integrados",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <Database className="h-5 w-5" />,
+          text: "Servicio de migración incluido (valorado en 300€)",
+          value: <Check className="h-5 w-5 text-green-600" />,
+        },
+        {
+          icon: <Smartphone className="h-5 w-5" />,
+          text: "App",
+          value: <span className="text-purple-600 italic">(próximamente)</span>,
+        },
+        {
+          icon: <Globe className="h-5 w-5" />,
+          text: "Coste Web",
+          highlight: true,
+          value: "200€",
+        },
       ],
       color: "from-indigo-600 to-blue-700",
       icon: <Star className="h-8 w-8" />,
@@ -262,15 +400,14 @@ export default function PricingPage() {
 
         {/* Nota IVA */}
         <p className="text-center text-gray-500 mt-12">*IVA no incluido</p>
-        <ReminderCalculator />
 
-        {/* TidyCal Calendar Section */}
-        <div className="mt-24 max-w-3xl mx-auto px-4">
+        {/* Sección de calendario simplificada */}
+        <div className="mt-20 max-w-5xl mx-auto">
           <h2 className="text-3xl font-bold text-center text-purple-900 mb-8">¿Tienes dudas? Te llamamos</h2>
 
           {/* TidyCal Embed con key única para forzar remontaje */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 border border-purple-100 overflow-hidden">
-            <div key={tidyCalKey.current}>
+          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div key={tidyCalKey.current} className="tidycal-container">
               <TidyCalEmbed />
             </div>
           </div>
