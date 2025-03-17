@@ -117,6 +117,7 @@ export default function TestimonialsSection() {
     }
   }, [])
 
+  // Modificar el array de testimonios para incluir la referencia a la imagen correcta
   const testimonials: Testimonial[] = [
     {
       name: "Clínica Víctor Díez",
@@ -135,9 +136,7 @@ export default function TestimonialsSection() {
     },
   ]
 
-  // Eliminar esta línea
-  // const victorImageUrl = "https://sjc.microlink.io/1K6Zx2lQ7mEYgvfajpZMm2AqOxAztvMG8VsOFY0EyCP1hUiYHH3DNNNuApw0CPhQkh2pfP2rUindS8EAnAs54A.jpeg"
-
+ 
   return (
     <section
       ref={sectionRef}
@@ -248,7 +247,7 @@ export default function TestimonialsSection() {
                     <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-200 to-purple-300 blur-md opacity-50"></div>
                     <div className="relative rounded-full overflow-hidden border-2 border-purple-100 w-full h-full">
                       <Image
-                        src={`/placeholder.svg?height=250&width=250&text=${encodeURIComponent(testimonial.name)}`}
+                        src={`/testimonio${index + 1}.png`}
                         alt={testimonial.name}
                         width={250}
                         height={250}

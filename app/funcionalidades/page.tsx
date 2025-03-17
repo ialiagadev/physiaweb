@@ -127,23 +127,17 @@ const FeatureItem = ({ icon, title, description, index, media }: FeatureItemProp
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ scale: 1.02 }}
             >
               {media.type === "image" ? (
-                <div className="relative h-[300px] sm:h-[350px] md:h-[400px] w-full overflow-hidden">
-                  <motion.div className="w-full h-full" whileHover={{ scale: 1.05 }} transition={{ duration: 0.5 }}>
-                    <Image
-                      src={media.src || "/placeholder.svg"}
-                      alt={title}
-                      fill
-                      className="object-contain md:object-cover object-center"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      priority={index < 2}
-                    />
-                  </motion.div>
-
-                  {/* Overlay con gradiente sutil */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-purple-900/20 via-transparent to-transparent pointer-events-none"></div>
+                <div className="relative w-full" style={{ height: "500px" }}>
+                  <Image
+                    src={media.src || "/placeholder.svg"}
+                    alt={title}
+                    fill
+                    className="object-scale-down object-center"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority={index < 2}
+                  />
                 </div>
               ) : (
                 <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
