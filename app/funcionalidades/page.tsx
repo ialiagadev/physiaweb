@@ -479,7 +479,7 @@ export default function FeaturesPage() {
               className="bg-gradient-to-r from-purple-600 to-purple-500 text-white font-medium py-3 px-8 rounded-full shadow-lg flex items-center gap-2"
             >
               <Sparkles className="h-5 w-5" />
-              <span>Comenzar prueba gratuita</span>
+              <span>comenzar prueba gratuita</span>
             </motion.a>
           </div>
         </motion.div>
