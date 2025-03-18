@@ -145,7 +145,11 @@ const FeatureItem = ({ icon, title, description, index, media }: FeatureItemProp
                     className="absolute inset-0 w-full h-full object-cover"
                     controls
                     preload="metadata"
-                    poster={`/videos/thumbnails/${media.src.split("/").pop()?.replace(".mp4", "-poster.png") || "default-poster.png"}`}
+                    poster={
+                      media.src.includes("conversacion-plataforma.mp4")
+                        ? "/videos/thumbnails/conversacion-plataforma-poster.png"
+                        : `/videos/thumbnails/${media.src.split("/").pop()?.replace(".mp4", "-poster.png")}`
+                    }
                   >
                     <source src={media.src} type="video/mp4" />
                     Tu navegador no soporta videos HTML5.
@@ -169,11 +173,11 @@ const FeatureItem = ({ icon, title, description, index, media }: FeatureItemProp
 }
 
 const videoPosters: Record<string, string> = {
-  "asistente-virtual.mp4": "/video-thumbnails/asistente-virtual-poster.png",
-  "conversacion-plataforma.mp4": "/video-thumbnails/conversacion-plataforma-poster.png",
-  "calendario.mp4": "/video-thumbnails/calendario-poster.png",
-  "resena-google.mp4": "/video-thumbnails/resena-google-poster.png",
-  "coger-cita.mp4": "/video-thumbnails/coger-cita-poster.png",
+  "asistente-virtual.mp4": "/videos/thumbnails/asistente-virtual-poster.png",
+  "conversacion-plataforma.mp4": "/videos/thumbnails/conversacion-plataforma-poster.png",
+  "calendario.mp4": "/videos/thumbnails/calendario-poster.png",
+  "resena-google.mp4": "/videos/thumbnails/resena-google-poster.png",
+  "coger-cita.mp4": "/videos/thumbnails/coger-cita-poster.png",
 }
 
 export default function FeaturesPage() {
