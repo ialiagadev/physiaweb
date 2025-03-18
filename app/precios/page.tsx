@@ -3,21 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import {
-  Users2,
-  Bell,
-  Phone,
-  Database,
-  Smartphone,
-  Sparkles,
-  Star,
-  Zap,
-  Bot,
-  CreditCard,
-  Calendar,
-  Check,
-  Globe,
-} from "lucide-react"
+import { Users2, Bell, Phone, Database, Smartphone, Sparkles, Star, Zap, Bot, CreditCard, Calendar } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
@@ -129,30 +115,24 @@ export default function PricingPage() {
         {
           icon: <Calendar className="h-5 w-5" />,
           text: "Sincronización con Google Calendar",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <CreditCard className="h-5 w-5" />,
           text: "Pagos integrados",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <Database className="h-5 w-5" />,
           text: "Servicio de migración incluido (valorado en 300€)",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <Smartphone className="h-5 w-5" />,
           text: "App",
           value: <span className="text-purple-600 italic">(próximamente)</span>,
         },
-        {
-          icon: <Globe className="h-5 w-5" />,
-          text: "Coste Web",
-          highlight: true,
-          value: "75€",
-        },
-      ],
+      ].filter((feature) => feature.text !== "Coste Web"),
       color: "from-blue-400 to-purple-500",
       icon: <Users2 className="h-8 w-8" />,
     },
@@ -189,30 +169,24 @@ export default function PricingPage() {
         {
           icon: <Calendar className="h-5 w-5" />,
           text: "Sincronización con Google Calendar",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <CreditCard className="h-5 w-5" />,
           text: "Pagos integrados",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <Database className="h-5 w-5" />,
           text: "Servicio de migración incluido (valorado en 300€)",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <Smartphone className="h-5 w-5" />,
           text: "App",
           value: <span className="text-purple-600 italic">(próximamente)</span>,
         },
-        {
-          icon: <Globe className="h-5 w-5" />,
-          text: "Coste Web",
-          highlight: true,
-          value: "150€",
-        },
-      ],
+      ].filter((feature) => feature.text !== "Coste Web"),
       popular: true,
       color: "from-purple-500 to-purple-700",
       icon: <Zap className="h-8 w-8" />,
@@ -249,30 +223,24 @@ export default function PricingPage() {
         {
           icon: <Calendar className="h-5 w-5" />,
           text: "Sincronización con Google Calendar",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <CreditCard className="h-5 w-5" />,
           text: "Pagos integrados",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <Database className="h-5 w-5" />,
           text: "Servicio de migración incluido (valorado en 300€)",
-          value: <Check className="h-5 w-5 text-green-600" />,
+          value: "",
         },
         {
           icon: <Smartphone className="h-5 w-5" />,
           text: "App",
           value: <span className="text-purple-600 italic">(próximamente)</span>,
         },
-        {
-          icon: <Globe className="h-5 w-5" />,
-          text: "Coste Web",
-          highlight: true,
-          value: "200€",
-        },
-      ],
+      ].filter((feature) => feature.text !== "Coste Web"),
       color: "from-indigo-600 to-blue-700",
       icon: <Star className="h-8 w-8" />,
     },

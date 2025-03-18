@@ -123,7 +123,7 @@ const FeatureItem = ({ icon, title, description, index, media }: FeatureItemProp
           {/* Contenido multimedia (imagen o video) */}
           {media && (
             <motion.div
-              className="mt-6 rounded-lg overflow-hidden shadow-xl border-4 border-white"
+              className="mt-6 rounded-lg overflow-hidden"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={isInView ? { opacity: 1, scale: 1 } : {}}
               transition={{ duration: 0.5, delay: 0.2 }}
@@ -142,14 +142,12 @@ const FeatureItem = ({ icon, title, description, index, media }: FeatureItemProp
               ) : (
                 <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
                   <video
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-contain bg-white/50"
                     controls
+                    autoPlay
+                    muted
+                    loop
                     preload="metadata"
-                    poster={
-                      media.src.includes("conversacion-plataforma.mp4")
-                        ? "/videos/thumbnails/conversacion-plataforma-poster.png"
-                        : `/videos/thumbnails/${media.src.split("/").pop()?.replace(".mp4", "-poster.png")}`
-                    }
                   >
                     <source src={media.src} type="video/mp4" />
                     Tu navegador no soporta videos HTML5.
@@ -486,4 +484,3 @@ export default function FeaturesPage() {
   )
 }
 
- 
