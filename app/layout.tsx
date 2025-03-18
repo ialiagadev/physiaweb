@@ -4,6 +4,7 @@ import localFont from "next/font/local"
 import "./globals.css"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
+import GoogleTagManager from "@/components/gtm"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -118,6 +119,8 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
+        {/* Añadir el componente GoogleTagManager */}
+        <GoogleTagManager />
         <Navbar />
         <main className="pt-16 flex-grow">{children}</main>
         <Footer />

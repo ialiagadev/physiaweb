@@ -40,6 +40,31 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Enlaces legales */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <div className="flex flex-wrap justify-center gap-4 text-xs text-gray-500">
+            <Link href="/condiciones-generales" className="hover:text-purple-700 transition-colors">
+              Condiciones generales
+            </Link>
+            <span className="hidden sm:inline">|</span>
+            <Link href="/privacy-policy" className="hover:text-purple-700 transition-colors">
+              Política de privacidad
+            </Link>
+            <span className="hidden sm:inline">|</span>
+            <Link href="/politica-de-privacidad-para-publicidad-y-emails" className="hover:text-purple-700 transition-colors">
+              Política de privacidad para publicidad y emails
+            </Link>
+            <span className="hidden sm:inline">|</span>
+            <Link href="/reembolso" className="hover:text-purple-700 transition-colors">
+              Política de reembolso
+            </Link>
+            <span className="hidden sm:inline">|</span>
+            <Link href="/politica-de-cookies" className="hover:text-purple-700 transition-colors">
+              Política de cookies
+            </Link>
+          </div>
+        </div>
+
         {/* Copyright */}
         <div className="mt-6 text-center text-xs text-gray-500">
           &copy; {new Date().getFullYear()} Physia. Todos los derechos reservados.
