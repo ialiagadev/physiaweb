@@ -3,10 +3,24 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { Users2, Bell, Phone, Database, Smartphone, Sparkles, Star, Zap, Bot, CreditCard, Calendar } from "lucide-react"
+import {
+  Users2,
+  Bell,
+  Phone,
+  Database,
+  Smartphone,
+  Sparkles,
+  Star,
+  Zap,
+  Bot,
+  CreditCard,
+  Calendar,
+  Calculator,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
+import ReminderCalculator from "@/components/reminider-calculator"
 
 // Tipos de planes
 type BillingPeriod = "monthly" | "biannual" | "annual"
@@ -368,6 +382,28 @@ export default function PricingPage() {
 
         {/* Nota IVA */}
         <p className="text-center text-gray-500 mt-12">*IVA no incluido</p>
+
+        {/* Sección de calculadora de recordatorios */}
+        <div className="mt-20 mb-20 max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-purple-100 border border-purple-200 mb-6">
+              <Calculator className="h-4 w-4 text-purple-700" />
+              <span className="text-purple-800 font-medium">Calculadora de Recordatorios</span>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-6">
+              Calcula el coste según tus necesidades
+            </h2>
+
+            <div className="h-1 w-32 bg-gradient-to-r from-purple-500 to-purple-300 mx-auto rounded-full mb-8" />
+
+            <p className="text-lg text-purple-800 mb-12 max-w-2xl mx-auto">
+              Personaliza tu plan añadiendo recordatorios adicionales y visualiza el coste total mensual
+            </p>
+          </div>
+
+          <ReminderCalculator />
+        </div>
 
         {/* Sección de calendario simplificada */}
         <div className="mt-20 max-w-5xl mx-auto">

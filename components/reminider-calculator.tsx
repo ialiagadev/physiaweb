@@ -7,20 +7,20 @@ import { motion } from "framer-motion"
 import { Check, Bell, Package, Zap, Building, Calculator, Sparkles } from "lucide-react"
 
 const ReminderCalculator = () => {
-  // Datos de los planes con diferentes tonos de lila
+  // Datos de los planes con diferentes tonos de lila (precios actualizados)
   const plans = [
     {
       id: "inicial",
       name: "Inicial",
-      basePrice: 110,
-      includedReminders: 120,
+      basePrice: 75,
+      includedReminders: 100,
       icon: <Package className="h-4 w-4" />,
       color: "from-indigo-400 to-indigo-600", // Tono más azulado
     },
     {
       id: "avanzado",
       name: "Avanzado",
-      basePrice: 160,
+      basePrice: 150,
       includedReminders: 300,
       icon: <Zap className="h-4 w-4" />,
       color: "from-purple-400 to-purple-600", // Tono medio (púrpura)
@@ -28,8 +28,8 @@ const ReminderCalculator = () => {
     {
       id: "enterprise",
       name: "Enterprise",
-      basePrice: 240,
-      includedReminders: 500,
+      basePrice: 200,
+      includedReminders: 600,
       icon: <Building className="h-4 w-4" />,
       color: "from-fuchsia-500 to-fuchsia-700", // Tono más rosado
     },
