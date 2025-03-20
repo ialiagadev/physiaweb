@@ -5,6 +5,7 @@ import "./globals.css"
 import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import GoogleTagManager from "@/components/gtm"
+import { SearchParamsProvider } from "@/components/search-params-provider"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -122,7 +123,9 @@ export default function RootLayout({
         {/* Añadir el componente GoogleTagManager */}
         <GoogleTagManager />
         <Navbar />
-        <main className="pt-16 flex-grow">{children}</main>
+        <SearchParamsProvider>
+          <main className="pt-16 flex-grow">{children}</main>
+        </SearchParamsProvider>
         <Footer />
       </body>
     </html>
