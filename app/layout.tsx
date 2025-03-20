@@ -122,11 +122,11 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         {/* Añadir el componente GoogleTagManager */}
         <GoogleTagManager />
-        <Navbar />
         <SearchParamsProvider>
+          <Navbar />
           <main className="pt-16 flex-grow">{children}</main>
+          <Footer />
         </SearchParamsProvider>
-        <Footer />
       </body>
     </html>
   )

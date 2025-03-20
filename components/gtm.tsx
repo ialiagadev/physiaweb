@@ -2,10 +2,11 @@
 
 import { usePathname, useSearchParams } from "next/navigation"
 import Script from "next/script"
-import { useEffect } from "react"
+import { useEffect, Suspense } from "react"
 import { GTM_ID, pageview } from "@/lib/gtm"
 
-export default function GoogleTagManager() {
+// Create a separate component for the part that uses useSearchParams
+function GTMPageView() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
@@ -15,6 +16,10 @@ export default function GoogleTagManager() {
     }
   }, [pathname, searchParams])
 
+  return null
+}
+
+export default function GoogleTagManager() {
   if (!GTM_ID) return null
 
   return (
@@ -42,6 +47,11 @@ export default function GoogleTagManager() {
           style={{ display: "none", visibility: "hidden" }}
         />
       </noscript>
+
+      {/* Wrap the component that uses useSearchParams in Suspense */}
+      <Suspense fallback={null}>
+        <GTMPageView />
+      </Suspense>
     </>
   )
 }
