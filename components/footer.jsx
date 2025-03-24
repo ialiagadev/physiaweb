@@ -35,7 +35,7 @@ export default function Footer() {
               className="flex items-center text-gray-600 hover:text-purple-700 transition-colors"
             >
               <Mail className="h-5 w-5" />
-              <span className="ml-2 text-sm">mvalera@myphysia.com</span>
+              <span className="ml-2 text-sm">info@myphysia.com</span>
             </a>
           </div>
         </div>
