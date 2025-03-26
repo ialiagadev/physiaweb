@@ -12,7 +12,7 @@ const ReminderCalculator = () => {
     {
       id: "inicial",
       name: "Inicial",
-      basePrice: 75,
+      basePrice: 100,
       includedReminders: 100,
       icon: <Package className="h-4 w-4" />,
       color: "from-indigo-400 to-indigo-600", // Tono más azulado

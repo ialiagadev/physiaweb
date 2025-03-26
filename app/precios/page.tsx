@@ -31,22 +31,25 @@ type PlanFeature = {
   value?: string | number | React.ReactNode
 }
 
+// Tipo para los nombres de los planes
+type PlanName = "INICIAL" | "AVANZADO" | "ENTERPRISE"
+
 // Configuración de precios exactos según las imágenes
 const PRICING = {
   initial: {
-    monthly: 75,
-    biannual: 68,
-    annual: 60,
+    monthly: 100,
+    biannual: 90, // 540€ semestral / 6 = 90€ mensual
+    annual: 80, // 960€ anual / 12 = 80€ mensual
   },
   advanced: {
     monthly: 150,
-    biannual: 135,
-    annual: 120,
+    biannual: 135, // 810€ semestral / 6 = 135€ mensual
+    annual: 120, // 1440€ anual / 12 = 120€ mensual
   },
   enterprise: {
     monthly: 200,
-    biannual: 180,
-    annual: 160,
+    biannual: 180, // 1080€ semestral / 6 = 180€ mensual
+    annual: 160, // 1920€ anual / 12 = 160€ mensual
   },
 }
 
@@ -98,7 +101,7 @@ export default function PricingPage() {
   // Características de cada plan
   const plans = [
     {
-      name: "INICIAL",
+      name: "INICIAL" as PlanName,
       description: "Para clínicas de 1 a 2 profesionales que quieren simplificar la gestión del día a día",
       price: PRICING.initial[billingPeriod],
       features: [
@@ -151,7 +154,7 @@ export default function PricingPage() {
       icon: <Users2 className="h-8 w-8" />,
     },
     {
-      name: "AVANZADO",
+      name: "AVANZADO" as PlanName,
       description:
         "Ideal para clínicas de hasta 10 profesionales que necesitan funcionalidades adicionales para la gestión diaria",
       price: PRICING.advanced[billingPeriod],
@@ -206,7 +209,7 @@ export default function PricingPage() {
       icon: <Zap className="h-8 w-8" />,
     },
     {
-      name: "ENTERPRISE",
+      name: "ENTERPRISE" as PlanName,
       description: "Para clínicas en crecimiento que necesitan funcionalidades concretas y personalización avanzada",
       price: PRICING.enterprise[billingPeriod],
       features: [
@@ -362,6 +365,30 @@ export default function PricingPage() {
                   <Button
                     className={`w-full bg-gradient-to-r ${plan.color} hover:opacity-90 transition-opacity duration-200 border-0 text-white`}
                     size="lg"
+                    onClick={() => {
+                      const stripeLinks: Record<PlanName, Record<BillingPeriod, string>> = {
+                        INICIAL: {
+                          monthly: "https://buy.stripe.com/3cs3eT4w503VbiE00S",
+                          biannual: "https://buy.stripe.com/00gg1F8Ml03VdqMbJB",
+                          annual: "https://buy.stripe.com/3csdTxaUtaIzcmIdRK",
+                        },
+                        AVANZADO: {
+                          monthly: "https://buy.stripe.com/14k6r51jT6sjaeA8xr",
+                          biannual: "https://buy.stripe.com/3cs8zdd2BbMD0E0150",
+                          annual: "https://buy.stripe.com/00gaHl3s117ZbiE3d9",
+                        },
+                        ENTERPRISE: {
+                          monthly: "https://buy.stripe.com/7sIg1F0fP8Ar5Yk3da",
+                          biannual: "https://buy.stripe.com/3cs02H1jTcQHcmIfZX",
+                          annual: "https://buy.stripe.com/8wM6r55A903VgCY8xw",
+                        },
+                      }
+
+                      const link = stripeLinks[plan.name][billingPeriod]
+                      if (link) {
+                        window.open(link, "_blank")
+                      }
+                    }}
                   >
                     Empezar ahora
                   </Button>
