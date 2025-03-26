@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar"
 import Footer from "@/components/footer"
 import GoogleTagManager from "@/components/gtm"
 import { SearchParamsProvider } from "@/components/search-params-provider"
+import WhatsAppButton from "@/components/whatsapp-button"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -126,6 +127,7 @@ export default function RootLayout({
           <Navbar />
           <main className="pt-16 flex-grow">{children}</main>
           <Footer />
+          <WhatsAppButton />
         </SearchParamsProvider>
       </body>
     </html>
