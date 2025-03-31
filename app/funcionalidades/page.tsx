@@ -140,6 +140,9 @@ const FeatureItem = ({ icon, title, description, index, media }: FeatureItemProp
                   />
                 </div>
               ) : (
+                // Modifica el componente de video para evitar la pantalla completa en iOS
+                // pero manteniendo la reproducción automática
+
                 <div className="relative w-full overflow-hidden" style={{ paddingBottom: "56.25%" }}>
                   <video
                     className="absolute inset-0 w-full h-full object-contain bg-white/50"
@@ -147,6 +150,7 @@ const FeatureItem = ({ icon, title, description, index, media }: FeatureItemProp
                     autoPlay
                     muted
                     loop
+                    playsInline // Este atributo es clave para evitar pantalla completa en iOS
                     preload="metadata"
                   >
                     <source src={media.src} type="video/mp4" />
