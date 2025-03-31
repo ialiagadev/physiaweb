@@ -183,24 +183,6 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            {/* WhatsApp Button for mobile */}
-            <motion.div
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="mr-2"
-            >
-              <a
-                href={WHATSAPP_LINK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1 bg-gradient-to-r from-green-600 to-green-500 text-white text-sm font-medium py-1.5 px-3 rounded-full"
-              >
-                <MessageCircle className="h-3 w-3" />
-                <span>Chat IA</span>
-              </a>
-            </motion.div>
-
             {/* Botón de Prueba Gratis para móvil con efecto de zoom */}
             <motion.div
               whileHover={{ scale: 1.08 }}
