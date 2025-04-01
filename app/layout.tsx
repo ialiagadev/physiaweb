@@ -8,6 +8,8 @@ import GoogleTagManager from "@/components/gtm"
 import { SearchParamsProvider } from "@/components/search-params-provider"
 import WhatsAppButton from "@/components/whatsapp-button"
 import { Analytics } from "@vercel/analytics/react"
+import SchemaOrg from "@/components/schema-org"
+import AIFeaturesSchema from "@/components/ai-features-schema"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -38,6 +40,8 @@ export const metadata: Metadata = {
     "inteligencia artificial salud",
     "software fisioterapia",
     "gestión citas médicas",
+    "IA para clínicas", // Añadida keyword importante
+    "inteligencia artificial clínicas", // Añadida keyword importante
   ],
   authors: [{ name: "PHYSIA" }],
   creator: "PHYSIA",
@@ -124,6 +128,9 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         {/* Añadir el componente GoogleTagManager */}
         <GoogleTagManager />
+        {/* Componentes de Schema.org */}
+        <SchemaOrg />
+        <AIFeaturesSchema />
         <SearchParamsProvider>
           <Navbar />
           <main className="pt-16 flex-grow">{children}</main>
