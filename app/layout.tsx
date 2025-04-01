@@ -7,6 +7,7 @@ import Footer from "@/components/footer"
 import GoogleTagManager from "@/components/gtm"
 import { SearchParamsProvider } from "@/components/search-params-provider"
 import WhatsAppButton from "@/components/whatsapp-button"
+import { Analytics } from "@vercel/analytics/react"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -128,6 +129,8 @@ export default function RootLayout({
           <main className="pt-16 flex-grow">{children}</main>
           <Footer />
           <WhatsAppButton />
+          {/* Componente de análisis de Vercel */}
+          <Analytics />
         </SearchParamsProvider>
       </body>
     </html>
