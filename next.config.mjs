@@ -23,6 +23,12 @@ const nextConfig = {
         destination: '/precios',
         permanent: true, // 301 redirección permanente (mejor para SEO)
       },
+      // Redirección de /price a /precios
+      {
+        source: '/price',
+        destination: '/precios',
+        permanent: true,
+      },
       // Redirección de cualquier otra ruta antigua que use index.php
       {
         source: '/index.php/:path*',
