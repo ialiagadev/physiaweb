@@ -26,6 +26,7 @@ export default function PruebaGratisPage() {
   const headerRef = useRef<HTMLDivElement>(null)
   const headerInView = useInView(headerRef, { once: true })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [successMessage, setSuccessMessage] = useState("")
 
   const [formData, setFormData] = useState({
     nombre: "",
@@ -70,10 +71,10 @@ export default function PruebaGratisPage() {
       })
 
       // Mostrar mensaje de éxito
-      alert("¡Gracias! Tus datos han sido registrados correctamente.")
+      setSuccessMessage("¡Gracias! Tus datos han sido registrados correctamente.")
     } catch (error) {
       console.error("Error:", error)
-      alert("Ha ocurrido un error al enviar el formulario. Por favor, inténtalo de nuevo.")
+      setSuccessMessage("Ha ocurrido un error al enviar el formulario. Por favor, inténtalo de nuevo.")
     } finally {
       setIsSubmitting(false)
     }
@@ -284,6 +285,32 @@ export default function PruebaGratisPage() {
             </form>
           </div>
         </motion.div>
+        {/* Mensaje de confirmación */}
+        {successMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-6 p-4 rounded-lg bg-green-50 border border-green-200 text-green-800 text-center"
+          >
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span className="font-medium">¡Enviado con éxito!</span>
+            </div>
+            <p>{successMessage}</p>
+            <button
+              onClick={() => setSuccessMessage("")}
+              className="mt-2 text-sm font-medium text-green-700 hover:text-green-900"
+            >
+              Cerrar
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   )
