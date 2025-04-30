@@ -9,6 +9,7 @@ const navLinks = [
   { name: "Inicio", href: "/" },
   { name: "Funcionalidades", href: "/funcionalidades" },
   { name: "Precios", href: "/precios" },
+  { name: "Soporte", href: "/soporte" },
 ]
 
 // WhatsApp link
@@ -148,6 +149,8 @@ export default function Navbar() {
 
           {/* Botones de acción en escritorio */}
           <div className="hidden md:flex items-center">
+          
+
             {/* WhatsApp Button */}
             <motion.div
               whileHover={{ scale: 1.08 }}
@@ -266,4 +269,3 @@ export default function Navbar() {
     </header>
   )
 }
-

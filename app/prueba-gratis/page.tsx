@@ -71,7 +71,9 @@ export default function PruebaGratisPage() {
       })
 
       // Mostrar mensaje de éxito
-      setSuccessMessage("¡Gracias! Tus datos han sido registrados correctamente.")
+      setSuccessMessage(
+        "¡Gracias! Tus datos han sido registrados correctamente y hemos enviado una notificación al equipo.",
+      )
     } catch (error) {
       console.error("Error:", error)
       setSuccessMessage("Ha ocurrido un error al enviar el formulario. Por favor, inténtalo de nuevo.")
@@ -315,4 +317,3 @@ export default function PruebaGratisPage() {
     </section>
   )
 }
-
