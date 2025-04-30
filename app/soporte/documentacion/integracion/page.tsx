@@ -112,7 +112,7 @@ export default function IntegracionPage() {
           {/* Main content */}
           <div className="md:w-3/4">
             <Link
-              href="/soporte/documentacion"
+              href="/soporte#documentacion"
               className="inline-flex items-center text-purple-600 hover:text-purple-700 mb-6"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -436,16 +436,7 @@ export default function IntegracionPage() {
                 </ul>
               </div>
 
-              <div className="bg-gray-100 p-6 rounded-lg mt-12">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">¿Necesitas más ayuda?</h3>
-                <p className="text-gray-700 mb-4">
-                  Si tienes dudas específicas sobre cómo integrar PHYSIA con tu sitio web o con otros sistemas, nuestro
-                  equipo de soporte está disponible para ayudarte.
-                </p>
-                <Link href="/soporte/contacto" className="text-purple-600 hover:text-purple-700 font-medium">
-                  Contacta con soporte →
-                </Link>
-              </div>
+             
             </div>
           </div>
         </div>

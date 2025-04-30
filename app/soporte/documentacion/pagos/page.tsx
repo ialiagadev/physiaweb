@@ -96,7 +96,7 @@ export default function PagosPage() {
           {/* Main content */}
           <div className="md:w-3/4">
             <Link
-              href="/soporte/documentacion"
+              href="/soporte#documentacion"
               className="inline-flex items-center text-purple-600 hover:text-purple-700 mb-6"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -111,7 +111,7 @@ export default function PagosPage() {
               <p className="text-gray-700 mb-6">
                 Si los servicios o recursos que ofreces requieren pago, puedes mostrar el precio en el momento de la
                 reserva. Quizás también te interese manejar las transacciones de pago como parte del proceso de reserva.
-                PHYSIA te ofrece una amplia gama de opciones de pago, desde la presentación de los precios de los
+                Physia te ofrece una amplia gama de opciones de pago, desde la presentación de los precios de los
                 servicios y recursos a la recogida de datos de tarjetas de crédito, la gestión de pagos o utilizar
                 nuestro sistema de créditos. Además de estas opciones de pago, el sistema también te permite ofrecer
                 varios tipos de descuentos y ofertas de promoción a tus clientes.
@@ -133,7 +133,7 @@ export default function PagosPage() {
                   <div className="md:w-1/2">
                     <h3 className="text-xl font-semibold text-purple-800 mb-3">Sistema de pagos integrado</h3>
                     <p className="text-gray-700">
-                      PHYSIA te ofrece un sistema de pagos completo e integrado que te permite gestionar todas las
+                     Physia te ofrece un sistema de pagos completo e integrado que te permite gestionar todas las
                       transacciones relacionadas con tus servicios.
                     </p>
                   </div>
@@ -176,12 +176,7 @@ export default function PagosPage() {
                 </div>
               </div>
 
-              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 my-6">
-                <p className="text-yellow-800">
-                  <strong>Consejo:</strong> Utiliza precios dinámicos para optimizar la ocupación, ofreciendo tarifas
-                  reducidas en horas de menor demanda.
-                </p>
-              </div>
+             
 
               <h2 id="trabajar-pagos-online" className="text-2xl font-semibold text-gray-900 mt-12 mb-4">
                 Trabajar con pagos online
@@ -189,8 +184,8 @@ export default function PagosPage() {
 
               <p className="text-gray-700 mb-6">
                 Si exiges el pago de tus clientes al realizar la reserva, puedes utilizar nuestro sistema de pagos
-                online integrado. Puedes elegir entre PayPal, Stripe y varios otros proveedores de pago, o incluir
-                configuración de pago personalizada.
+                online integrado. Puedes elegir entre PayPal, Stripe y varios otros proveedores de pago, o incluso una
+                combinación de varios proveedores.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
@@ -217,12 +212,15 @@ export default function PagosPage() {
               </div>
 
               <h2 id="facturacion-pagos-manuales" className="text-2xl font-semibold text-gray-900 mt-12 mb-4">
-                Facturación y pagos manuales
+                Trabajar con facturación o pagos manuales
               </h2>
 
               <p className="text-gray-700 mb-6">
-                Si prefieres gestionar los pagos fuera del sistema o necesitas un proceso de facturación más complejo,
-                PHYSIA te ofrece opciones para:
+                Si deseas cobrar el pago de una cita, pero no en el momento de la reserva, puedes utilizar la
+                facturación o gestionar el pago tú mismo. Puedes enviar una factura a través de un proveedor de
+                facturación en el momento de la reserva o después de que la cita haya tenido lugar. Si eliges manejar el
+                pago tú mismo, puedes mostrar un mensaje en el momento de la reserva que explica el proceso al usuario.
+                Podrías, por ejemplo, decirle al usuario que envíe un cheque o que haga una transferencia bancaria.
               </p>
 
               <ul className="list-disc pl-6 space-y-2 mb-6 text-gray-700">
@@ -234,12 +232,13 @@ export default function PagosPage() {
               </ul>
 
               <h2 id="sistema-creditos" className="text-2xl font-semibold text-gray-900 mt-12 mb-4">
-                Utilizar el sistema de créditos
+                Trabajar con un sistema de créditos
               </h2>
 
               <p className="text-gray-700 mb-6">
-                PHYSIA ofrece un sistema de créditos que permite a los usuarios comprar créditos por adelantado y
-                utilizarlos para reservar servicios:
+                Como alternativa, puedes dar a tus clientes la opción de pagar con créditos que reciban de ti o que
+                compraron en tu tienda web en Physia. Dado que los créditos se muestran como moneda, puedes dejar que
+                los clientes pueden utilizar su crédito en combinación con un pago extra online.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
@@ -270,7 +269,12 @@ export default function PagosPage() {
               </h2>
 
               <p className="text-gray-700 mb-6">
-                Aumenta tus ventas y fideliza a tus clientes ofreciendo descuentos y promociones especiales:
+                Hay varias maneras en las que puedes ofrecer descuentos y promociones. Estos abarcarían desde descuentos
+                únicos para clientes individuales hasta aceptar cupones como parte de una campaña promocional.
+                Utilizando reglas de precios, puedes implementar una amplia gama de descuentos basados en el tiempo,
+                como descuentos estacionales o para el fin de semana. Además, ofrecer paquetes de créditos a precios
+                rebajados puede ser una manera efectiva de generar lealtad del cliente y conseguir que los clientes
+                vuelvan en el futuro.
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
@@ -302,7 +306,7 @@ export default function PagosPage() {
               </h2>
 
               <p className="text-gray-700 mb-6">
-                PHYSIA se integra con múltiples proveedores de pago para ofrecerte flexibilidad:
+                Physia se integra con múltiples proveedores de pago para ofrecerte flexibilidad:
               </p>
 
               <ul className="list-disc pl-6 space-y-2 mb-6 text-gray-700">
@@ -324,44 +328,10 @@ export default function PagosPage() {
                   específicas
                 </li>
               </ul>
-
-              <div className="bg-purple-50 rounded-lg p-6 my-8">
-                <h3 className="text-xl font-semibold text-purple-800 mb-3">Ejemplo de configuración de pagos</h3>
-                <p className="text-gray-700 mb-4">
-                  Una clínica podría configurar su sistema de pagos de la siguiente manera:
-                </p>
-                <ul className="list-disc pl-6 space-y-2 text-gray-700">
-                  <li>
-                    <strong>Precios dinámicos:</strong> Tarifas diferentes según el tipo de tratamiento y duración
-                  </li>
-                  <li>
-                    <strong>Pago parcial:</strong> Exigir un depósito del 30% al reservar y el resto en la clínica
-                  </li>
-                  <li>
-                    <strong>Bonos de tratamiento:</strong> Ofrecer paquetes de 5 o 10 sesiones con descuento
-                  </li>
-                  <li>
-                    <strong>Descuentos automáticos:</strong> 10% de descuento para nuevos pacientes en su primera visita
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-gray-100 p-6 rounded-lg mt-12">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">¿Necesitas más ayuda?</h3>
-                <p className="text-gray-700 mb-4">
-                  Si tienes dudas específicas sobre cómo configurar el sistema de pagos para tu organización, nuestro
-                  equipo de soporte está disponible para ayudarte.
-                </p>
-                <Link href="/soporte/contacto" className="text-purple-600 hover:text-purple-700 font-medium">
-                  Contacta con soporte →
-                </Link>
-              </div>
             </div>
           </div>
         </div>
       </div>
-    
     </main>
   )
 }
-
