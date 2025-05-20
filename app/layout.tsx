@@ -110,8 +110,8 @@ export const metadata: Metadata = {
   },
   manifest: "/site.webmanifest",
   verification: {
-    // Añade tus códigos de verificación cuando los tengas
-    google: "google-site-verification-code",
+    google: "glHJJwWqR5_tpvQTv5WE7L9Mtc6XRE_EbAUscREhW5FQ", // Solo el código, no el prefijo
+  
     // yandex: "yandex-verification-code",
     // bing: "bing-verification-code",
   },
