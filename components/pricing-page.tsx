@@ -432,17 +432,7 @@ export default function PricingPage() {
           <ReminderCalculator />
         </div>
 
-        {/* Sección de calendario simplificada */}
-        <div className="mt-20 max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-purple-900 mb-8">¿Tienes dudas? Te llamamos</h2>
-
-          {/* TidyCal Embed con key única para forzar remontaje */}
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-            <div key={tidyCalKey.current} className="tidycal-container">
-              <TidyCalEmbed />
-            </div>
-          </div>
-        </div>
+        
       </div>
     </section>
   )
