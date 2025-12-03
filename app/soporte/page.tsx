@@ -165,7 +165,22 @@ export default function SoportePage() {
         </div>
       </section>
 
- 
+      {/* Iframe Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <iframe
+            src="https://app.healthmate.tech/booking/68"
+            width="100%"
+            height="600"
+            frameBorder="0"
+            style={{
+              borderRadius: "8px",
+              boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)"
+            }}
+          ></iframe>
+        </div>
+      </section>
+
     </main>
   )
 }

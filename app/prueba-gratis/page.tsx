@@ -1,11 +1,10 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useRef } from "react"
 import { motion } from "framer-motion"
 import { useInView } from "framer-motion"
-import { Sparkles, User, Mail, Phone, Clock, ArrowRight, Loader2 } from "lucide-react"
+import { Sparkles, User, Mail, Phone, Clock, ArrowRight, Loader2, X } from 'lucide-react'
 
 // Componente para el efecto de resaltado del título
 const HighlightedText = ({ children }: { children: React.ReactNode }) => {
@@ -27,7 +26,7 @@ export default function PruebaGratisPage() {
   const headerInView = useInView(headerRef, { once: true })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [successMessage, setSuccessMessage] = useState("")
-
+  const [showBookingDemo, setShowBookingDemo] = useState(false)
   const [formData, setFormData] = useState({
     nombre: "",
     email: "",
@@ -46,7 +45,6 @@ export default function PruebaGratisPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-
     try {
       const response = await fetch("/api/submit-form", {
         method: "POST",
@@ -57,7 +55,6 @@ export default function PruebaGratisPage() {
       })
 
       const data = await response.json()
-
       if (!response.ok) {
         throw new Error(data.error || "Error al enviar el formulario")
       }
@@ -72,7 +69,7 @@ export default function PruebaGratisPage() {
 
       // Mostrar mensaje de éxito
       setSuccessMessage(
-        "¡Gracias! Tus datos han sido registrados correctamente y hemos enviado una notificación al equipo.",
+        "¡Gracias! Tus datos han sido registrados correctamente y hemos enviado una notificación al equipo."
       )
     } catch (error) {
       console.error("Error:", error)
@@ -287,12 +284,13 @@ export default function PruebaGratisPage() {
             </form>
           </div>
         </motion.div>
+
         {/* Mensaje de confirmación */}
         {successMessage && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-6 p-4 rounded-lg bg-green-50 border border-green-200 text-green-800 text-center"
+            className="mt-6 p-4 rounded-lg bg-green-50 border border-green-200 text-green-800 text-center max-w-md mx-auto"
           >
             <div className="flex items-center justify-center gap-2 mb-1">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -304,12 +302,83 @@ export default function PruebaGratisPage() {
               </svg>
               <span className="font-medium">¡Enviado con éxito!</span>
             </div>
-            <p>{successMessage}</p>
+            <p className="mb-3">{successMessage}</p>
+            <button
+              onClick={() => setShowBookingDemo(true)}
+              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium mr-2"
+            >
+              Ver Demo del Sistema
+            </button>
             <button
               onClick={() => setSuccessMessage("")}
-              className="mt-2 text-sm font-medium text-green-700 hover:text-green-900"
+              className="text-sm font-medium text-green-700 hover:text-green-900"
             >
               Cerrar
+            </button>
+          </motion.div>
+        )}
+
+        {/* Demo del Sistema de Reservas */}
+        {showBookingDemo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-12 max-w-6xl mx-auto"
+          >
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl border border-purple-100 overflow-hidden">
+              {/* Header del demo */}
+              <div className="bg-gradient-to-r from-purple-600 to-purple-500 text-white p-4 flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-bold">Demo - Sistema de Reservas PHYSIA</h3>
+                  <p className="text-purple-100 text-sm">Prueba nuestro sistema de citas en tiempo real</p>
+                </div>
+                <button
+                  onClick={() => setShowBookingDemo(false)}
+                  className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              
+              {/* Iframe del sistema de reservas */}
+              <div className="relative">
+                <iframe 
+                  src="https://pruebasphysia.vercel.app/booking/56" 
+                  width="100%" 
+                  height="800px"
+                  className="border-0"
+                  title="Demo Sistema de Reservas PHYSIA"
+                />
+                
+                {/* Overlay con información */}
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg max-w-xs">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-sm font-medium text-gray-700">Demo en vivo</span>
+                  </div>
+                  <p className="text-xs text-gray-600">
+                    Este es nuestro sistema real funcionando. Puedes interactuar con él para ver cómo funciona.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Botón para mostrar demo sin necesidad de formulario */}
+        {!showBookingDemo && !successMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="text-center mt-8"
+          >
+            <p className="text-purple-600 text-sm mb-3">¿Quieres ver el sistema antes de registrarte?</p>
+            <button
+              onClick={() => setShowBookingDemo(true)}
+              className="text-purple-600 hover:text-purple-700 underline text-sm font-medium"
+            >
+              Ver Demo del Sistema de Reservas →
             </button>
           </motion.div>
         )}
