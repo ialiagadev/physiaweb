@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect } from "react"
-import Link from "next/link"
 import { FileText, LayoutGrid, User, Settings, Code, Coffee } from "lucide-react"
 
 export default function SoportePage() {
@@ -11,9 +10,12 @@ export default function SoportePage() {
 
     if (!btn) return
 
-    const bookingUrl = "https://healthmate.tech/booking/68?mode=popup"
+    const bookingUrl = "https://app.healthmate.tech/booking/68"
 
-    const handler = () => {
+    const handler = (e: Event) => {
+      e.preventDefault()
+      e.stopPropagation()
+
       // Crear overlay oscuro
       const overlay = document.createElement("div")
       overlay.id = "healthmate-overlay"
@@ -30,12 +32,20 @@ export default function SoportePage() {
       closeBtn.innerHTML = "✕"
       closeBtn.style.cssText =
         "position:absolute;top:10px;right:10px;z-index:1;background:white;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s;"
-      closeBtn.onclick = () => document.body.removeChild(overlay)
+      closeBtn.onclick = () => {
+        if (document.body.contains(overlay)) {
+          document.body.removeChild(overlay)
+        }
+      }
 
       // Iframe popup
       const iframe = document.createElement("iframe")
       iframe.src = bookingUrl
       iframe.style.cssText = "width:100%;height:100%;border:none;"
+
+      iframe.onerror = () => {
+        console.error("[v0] Error cargando iframe de Healthmate")
+      }
 
       popup.appendChild(closeBtn)
       popup.appendChild(iframe)
@@ -44,15 +54,18 @@ export default function SoportePage() {
 
       // Cerrar haciendo clic fuera
       overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) document.body.removeChild(overlay)
+        if (e.target === overlay && document.body.contains(overlay)) {
+          document.body.removeChild(overlay)
+        }
       })
 
       // Mensaje de Healthmate al enviar reserva
       const listener = (event: { data: { type: string } }) => {
         if (event.data?.type === "healthmate:calendar:booking_submitted") {
           setTimeout(() => {
-            if (document.getElementById("healthmate-overlay")) {
-              document.body.removeChild(overlay)
+            const existingOverlay = document.getElementById("healthmate-overlay")
+            if (existingOverlay && document.body.contains(existingOverlay)) {
+              document.body.removeChild(existingOverlay)
             }
           }, 3000)
         }
@@ -75,19 +88,16 @@ export default function SoportePage() {
           <p className="text-xl text-gray-600 mb-8">Busca rápidamente un tema:</p>
 
           <div className="flex flex-wrap justify-center gap-4 max-w-3xl mx-auto">
-            <Link
-              href="#documentacion"
-              className="border border-gray-300 rounded-full px-6 py-2 hover:border-purple-600 transition-colors"
+            <button
+              onClick={() => document.getElementById("documentacion")?.scrollIntoView({ behavior: "smooth" })}
+              className="border border-gray-300 rounded-full px-6 py-2 hover:border-purple-600 transition-colors cursor-pointer"
             >
               <span className="text-gray-700">Documentación</span>
-            </Link>
+            </button>
 
-            <Link
-              href="/soporte/faq"
-              className="border border-gray-300 rounded-full px-6 py-2 hover:border-purple-600 transition-colors"
-            >
-              <span className="text-gray-700">FAQ</span>
-            </Link>
+            <div className="border border-gray-300 rounded-full px-6 py-2 opacity-50 cursor-not-allowed">
+              <span className="text-gray-700">FAQ (próximamente)</span>
+            </div>
           </div>
         </div>
       </section>
@@ -100,70 +110,51 @@ export default function SoportePage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-12">Documentación</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link
-              href="/soporte/documentacion/como-empezar"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
-            >
+            <div className="bg-gray-50 p-8 rounded-lg opacity-75 cursor-not-allowed">
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <FileText className="w-16 h-16" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                  Empezar
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Empezar</h3>
                 <p className="text-gray-600">Cómo empezar con PHYSIA</p>
+                <p className="text-sm text-gray-400 mt-2">Próximamente</p>
               </div>
-            </Link>
+            </div>
 
-            <Link
-              href="/soporte/documentacion/control-acceso"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
-            >
+            <div className="bg-gray-50 p-8 rounded-lg opacity-75 cursor-not-allowed">
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <User className="w-16 h-16" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                  Control de acceso
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Control de acceso</h3>
                 <p className="text-gray-600">Controlar el acceso a tu horario</p>
+                <p className="text-sm text-gray-400 mt-2">Próximamente</p>
               </div>
-            </Link>
+            </div>
 
-            <Link
-              href="/soporte/documentacion/proceso"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
-            >
+            <div className="bg-gray-50 p-8 rounded-lg opacity-75 cursor-not-allowed">
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <Settings className="w-16 h-16" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                  Proceso de usuario
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Proceso de usuario</h3>
                 <p className="text-gray-600">Configurar el proceso de usuario</p>
+                <p className="text-sm text-gray-400 mt-2">Próximamente</p>
               </div>
-            </Link>
+            </div>
 
-            <Link
-              href="/soporte/documentacion/disposicion"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
-            >
+            <div className="bg-gray-50 p-8 rounded-lg opacity-75 cursor-not-allowed">
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <LayoutGrid className="w-16 h-16" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                  Disposición
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Disposición</h3>
                 <p className="text-gray-600">Cambiar la disposición de tu horario</p>
+                <p className="text-sm text-gray-400 mt-2">Próximamente</p>
               </div>
-            </Link>
+            </div>
 
-            <Link
-              href="/soporte/documentacion/pagos"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
-            >
+            <div className="bg-gray-50 p-8 rounded-lg opacity-75 cursor-not-allowed">
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <svg
@@ -181,42 +172,33 @@ export default function SoportePage() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                  Pagos
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Pagos</h3>
                 <p className="text-gray-600">Configurar pagos en tu sistema</p>
+                <p className="text-sm text-gray-400 mt-2">Próximamente</p>
               </div>
-            </Link>
+            </div>
 
-            <Link
-              href="/soporte/documentacion/integracion"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
-            >
+            <div className="bg-gray-50 p-8 rounded-lg opacity-75 cursor-not-allowed">
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <Code className="w-16 h-16" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                  Integración
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Integración</h3>
                 <p className="text-gray-600">Integrar PHYSIA con otros sistemas</p>
+                <p className="text-sm text-gray-400 mt-2">Próximamente</p>
               </div>
-            </Link>
+            </div>
 
-            <Link
-              href="/soporte/documentacion/uso-diario"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
-            >
+            <div className="bg-gray-50 p-8 rounded-lg opacity-75 cursor-not-allowed">
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <Coffee className="w-16 h-16" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-purple-600 transition-colors">
-                  Uso diario
-                </h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Uso diario</h3>
                 <p className="text-gray-600">Gestión diaria de tu calendario</p>
+                <p className="text-sm text-gray-400 mt-2">Próximamente</p>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -225,6 +207,7 @@ export default function SoportePage() {
       <section className="py-16 text-center">
         <button
           id="healthmate-booking-btn"
+          type="button"
           style={{
             background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
             color: "white",
