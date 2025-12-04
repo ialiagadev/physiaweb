@@ -1,75 +1,73 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import Link from "next/link";
-import { FileText, LayoutGrid, User, Settings, Code, Coffee } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect } from "react"
+import Link from "next/link"
+import { FileText, LayoutGrid, User, Settings, Code, Coffee } from "lucide-react"
 
 export default function SoportePage() {
   // ---------- SCRIPT DEL POPUP ----------
   useEffect(() => {
-    const btn = document.getElementById("healthmate-booking-btn");
+    const btn = document.getElementById("healthmate-booking-btn")
 
-    if (!btn) return;
+    if (!btn) return
 
-    const bookingUrl = "https://healthmate.tech/booking/68?mode=popup";
+    const bookingUrl = "https://healthmate.tech/booking/68?mode=popup"
 
     const handler = () => {
       // Crear overlay oscuro
-      const overlay = document.createElement("div");
-      overlay.id = "healthmate-overlay";
+      const overlay = document.createElement("div")
+      overlay.id = "healthmate-overlay"
       overlay.style.cssText =
-        "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:99998;display:flex;align-items:center;justify-content:center;";
+        "position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:99998;display:flex;align-items:center;justify-content:center;"
 
       // Crear popup
-      const popup = document.createElement("div");
+      const popup = document.createElement("div")
       popup.style.cssText =
-        "position:relative;width:95%;max-width:900px;height:90vh;background:white;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden;";
+        "position:relative;width:95%;max-width:900px;height:90vh;background:white;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden;"
 
       // Botón cerrar
-      const closeBtn = document.createElement("button");
-      closeBtn.innerHTML = "✕";
+      const closeBtn = document.createElement("button")
+      closeBtn.innerHTML = "✕"
       closeBtn.style.cssText =
-        "position:absolute;top:10px;right:10px;z-index:1;background:white;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s;";
-      closeBtn.onclick = () => document.body.removeChild(overlay);
+        "position:absolute;top:10px;right:10px;z-index:1;background:white;border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,0.15);transition:all 0.2s;"
+      closeBtn.onclick = () => document.body.removeChild(overlay)
 
       // Iframe popup
-      const iframe = document.createElement("iframe");
-      iframe.src = bookingUrl;
-      iframe.style.cssText = "width:100%;height:100%;border:none;";
+      const iframe = document.createElement("iframe")
+      iframe.src = bookingUrl
+      iframe.style.cssText = "width:100%;height:100%;border:none;"
 
-      popup.appendChild(closeBtn);
-      popup.appendChild(iframe);
-      overlay.appendChild(popup);
-      document.body.appendChild(overlay);
+      popup.appendChild(closeBtn)
+      popup.appendChild(iframe)
+      overlay.appendChild(popup)
+      document.body.appendChild(overlay)
 
       // Cerrar haciendo clic fuera
       overlay.addEventListener("click", (e) => {
-        if (e.target === overlay) document.body.removeChild(overlay);
-      });
+        if (e.target === overlay) document.body.removeChild(overlay)
+      })
 
       // Mensaje de Healthmate al enviar reserva
-      const listener = (event: { data: { type: string; }; }) => {
+      const listener = (event: { data: { type: string } }) => {
         if (event.data?.type === "healthmate:calendar:booking_submitted") {
           setTimeout(() => {
             if (document.getElementById("healthmate-overlay")) {
-              document.body.removeChild(overlay);
+              document.body.removeChild(overlay)
             }
-          }, 3000);
+          }, 3000)
         }
-      };
+      }
 
-      window.addEventListener("message", listener);
-    };
+      window.addEventListener("message", listener)
+    }
 
-    btn.addEventListener("click", handler);
-    return () => btn.removeEventListener("click", handler);
-  }, []);
+    btn.addEventListener("click", handler)
+    return () => btn.removeEventListener("click", handler)
+  }, [])
 
   // ---------- UI PRINCIPAL ----------
   return (
     <main className="min-h-screen bg-white">
-
       {/* Hero Section */}
       <section className="py-16 text-center">
         <div className="container mx-auto px-4">
@@ -102,9 +100,10 @@ export default function SoportePage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-12">Documentación</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-
-            <Link href="/soporte/documentacion/como-empezar"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group">
+            <Link
+              href="/soporte/documentacion/como-empezar"
+              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <FileText className="w-16 h-16" />
@@ -116,8 +115,10 @@ export default function SoportePage() {
               </div>
             </Link>
 
-            <Link href="/soporte/documentacion/control-acceso"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group">
+            <Link
+              href="/soporte/documentacion/control-acceso"
+              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <User className="w-16 h-16" />
@@ -129,8 +130,10 @@ export default function SoportePage() {
               </div>
             </Link>
 
-            <Link href="/soporte/documentacion/proceso"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group">
+            <Link
+              href="/soporte/documentacion/proceso"
+              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <Settings className="w-16 h-16" />
@@ -142,8 +145,10 @@ export default function SoportePage() {
               </div>
             </Link>
 
-            <Link href="/soporte/documentacion/disposicion"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group">
+            <Link
+              href="/soporte/documentacion/disposicion"
+              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <LayoutGrid className="w-16 h-16" />
@@ -155,8 +160,10 @@ export default function SoportePage() {
               </div>
             </Link>
 
-            <Link href="/soporte/documentacion/pagos"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group">
+            <Link
+              href="/soporte/documentacion/pagos"
+              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <svg
@@ -181,8 +188,10 @@ export default function SoportePage() {
               </div>
             </Link>
 
-            <Link href="/soporte/documentacion/integracion"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group">
+            <Link
+              href="/soporte/documentacion/integracion"
+              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <Code className="w-16 h-16" />
@@ -194,8 +203,10 @@ export default function SoportePage() {
               </div>
             </Link>
 
-            <Link href="/soporte/documentacion/uso-diario"
-              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group">
+            <Link
+              href="/soporte/documentacion/uso-diario"
+              className="bg-gray-50 p-8 rounded-lg hover:shadow-md transition-shadow group"
+            >
               <div className="flex flex-col items-center text-center">
                 <div className="w-20 h-20 flex items-center justify-center text-purple-500 mb-6">
                   <Coffee className="w-16 h-16" />
@@ -206,7 +217,6 @@ export default function SoportePage() {
                 <p className="text-gray-600">Gestión diaria de tu calendario</p>
               </div>
             </Link>
-
           </div>
         </div>
       </section>
@@ -228,17 +238,17 @@ export default function SoportePage() {
             transition: "all 0.3s ease",
           }}
           onMouseOver={(e) => {
-            e.target.style.transform = "translateY(-2px)";
-            e.target.style.boxShadow = "0 6px 12px rgba(0,0,0,0.15)";
+            ;(e.target as HTMLButtonElement).style.transform = "translateY(-2px)"
+            ;(e.target as HTMLButtonElement).style.boxShadow = "0 6px 12px rgba(0,0,0,0.15)"
           }}
           onMouseOut={(e) => {
-            e.target.style.transform = "translateY(0)";
-            e.target.style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)";
+            ;(e.target as HTMLButtonElement).style.transform = "translateY(0)"
+            ;(e.target as HTMLButtonElement).style.boxShadow = "0 4px 6px rgba(0,0,0,0.1)"
           }}
         >
           Reservar Cita
         </button>
       </section>
     </main>
-  );
+  )
 }
